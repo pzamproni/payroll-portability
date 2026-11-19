@@ -392,3 +392,15 @@ Funcionalidade: Portabilidade de convênios com integridade e recuperação
     Dado uma resposta de erro da API cujo JSON é nulo ou não contém objeto de erro válido
     Quando o frontend processa a resposta
     Então uma mensagem de falha controlada deve ser exibida sem erro de acesso a propriedades
+
+  @AC-066
+  Cenário: Rejeitar identificador inválido na autorização da Central
+    Dado que a Central responde uma autorização assinada com identificador vazio ou excessivo
+    Quando o adaptador recebe a resposta
+    Então deve informar falha explícita de integração antes de persistir a autorização
+
+  @AC-067
+  Cenário: Atualizar agenda após falha transitória depois da confirmação
+    Dado que uma operação foi confirmada e a primeira atualização da agenda falhou
+    Quando o próximo ciclo de consulta for executado
+    Então a agenda deve ser consultada novamente e mostrar a conta confirmada

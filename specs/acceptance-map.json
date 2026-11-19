@@ -388,5 +388,17 @@
     "file": "frontend/src/api.test.ts",
     "test": "normaliza erros sem objeto JSON válido",
     "type": "unit"
+  },
+  "AC-066": {
+    "scenario": "Rejeitar identificador inválido na autorização da Central",
+    "file": "backend/src/test/java/com/payrollportability/CentralClientContractTest.java",
+    "test": "invalidAuthorizationIdentifierIsRejected",
+    "type": "integration"
+  },
+  "AC-067": {
+    "scenario": "Atualizar agenda após falha transitória depois da confirmação",
+    "file": "frontend/src/App.test.tsx",
+    "test": "repete atualização da agenda após falha transitória na confirmação",
+    "type": "integration"
   }
 }

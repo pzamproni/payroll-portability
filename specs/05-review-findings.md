@@ -15,4 +15,6 @@ Review scope: six functional flows, all non-functional requirements, Central con
 - Normalize malformed frontend error bodies.
 - Review actual dependencies and production JAR scopes; refresh deprecated CI actions from official releases.
 
-AC-052 through AC-065 provide distinct executable tests for the added criteria. Existing AC-021 and AC-047 are strengthened without changing their identities. Existing architecture, consent, idempotency, retry, rejection and persistence behaviors remain required.
+AC-052 through AC-067 provide distinct executable tests for the added criteria. Existing AC-021 and AC-047 are strengthened without changing their identities. Existing architecture, consent, idempotency, retry, rejection and persistence behaviors remain required.
+
+Also reject invalid authorization identifiers and retry agenda refresh after transient failures following terminal operation states.
