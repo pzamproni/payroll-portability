@@ -73,7 +73,7 @@ flowchart LR
 
 Os bancos são separados logicamente no mesmo Postgres, sem transação distribuída. Durante a confirmação remota pode existir uma pequena janela antes da atualização local; retry idempotente converge os estados.
 
-## SDD e harness de IA
+## SDD e documentação técnica
 
 O primeiro commit contém as especificações antes da implementação:
 
@@ -83,8 +83,8 @@ O primeiro commit contém as especificações antes da implementação:
 - [Rastreabilidade cenário → teste](specs/acceptance-map.json)
 - [Plano de verificação](specs/03-plano-verificacao.md)
 - [Decisões arquiteturais e trade-offs](docs/adr.md)
-- [Harness, prompts, restrições e uso de IA](docs/ai-harness.md)
 - [Resultados verificados e limitações](docs/verification.md)
+- [Demonstração manual dos sete cenários](docs/evidence/demonstracao-manual.json)
 
 A implementação usa IA como apoio a especificação, código e testes. As evidências vêm de execução real; o relatório registra as correções identificadas durante a validação. Nenhuma API de IA é necessária para executar o produto.
 

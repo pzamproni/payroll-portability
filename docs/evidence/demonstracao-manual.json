@@ -1,0 +1,546 @@
+{
+  "data": "2026-11-19",
+  "ambiente": "Docker local com PostgreSQL",
+  "execucao": "Navegador interno; consentimento, seleção, conta, solicitação e acompanhamento pela interface. Contagens na Central conferidas por consulta SQL somente leitura.",
+  "cenarios": [
+    {
+      "cenario": "Confirmação normal",
+      "beneficiario": "DEMO-CONFIRMACAO-1911",
+      "operacao": "8ed6c4cd-f1ab-4677-b5d1-797eb355c0a4",
+      "status": "CONFIRMADA",
+      "protocolo": "cc545b0f-403a-475b-941c-9bd696b5a938",
+      "parcelas": 2,
+      "operacoesNaCentral": 1,
+      "eventos": [
+        {
+          "sequence": 187,
+          "quando": "2026-11-19T09:57:21.689690Z",
+          "tipo": "SOLICITADA",
+          "detalhe": "Solicitação registrada; aguardando envio à Central. Conta ainda não alterada."
+        },
+        {
+          "sequence": 188,
+          "quando": "2026-11-19T09:57:21.911923Z",
+          "tipo": "ACEITA_CENTRAL",
+          "detalhe": "Central respondeu 202. Protocolo: cc545b0f-403a-475b-941c-9bd696b5a938"
+        },
+        {
+          "sequence": 189,
+          "quando": "2026-11-19T09:57:22.931345Z",
+          "tipo": "CONSULTA_PENDENTE",
+          "detalhe": "Central ainda está processando a portabilidade."
+        },
+        {
+          "sequence": 190,
+          "quando": "2026-11-19T09:57:22.932919Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 2000 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 191,
+          "quando": "2026-11-19T09:57:24.962547Z",
+          "tipo": "CONSULTA_PENDENTE",
+          "detalhe": "Central ainda está processando a portabilidade."
+        },
+        {
+          "sequence": 192,
+          "quando": "2026-11-19T09:57:24.963772Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 2406 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 193,
+          "quando": "2026-11-19T09:57:27.488065Z",
+          "tipo": "CONSULTA_PENDENTE",
+          "detalhe": "Central ainda está processando a portabilidade."
+        },
+        {
+          "sequence": 194,
+          "quando": "2026-11-19T09:57:27.489067Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 4534 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 195,
+          "quando": "2026-11-19T09:57:32.546764Z",
+          "tipo": "CONFIRMADA",
+          "detalhe": "Central confirmou a portabilidade."
+        },
+        {
+          "sequence": 196,
+          "quando": "2026-11-19T09:57:32.546897Z",
+          "tipo": "CONTA_ATUALIZADA",
+          "detalhe": "Conta de recebimento atualizada para as parcelas confirmadas."
+        }
+      ]
+    },
+    {
+      "cenario": "Rejeição pela Central",
+      "beneficiario": "DEMO-REJEICAO-1911",
+      "operacao": "282da648-e708-462d-8d68-47d935eb26fe",
+      "status": "REJEITADA",
+      "protocolo": "cad24f3b-a9e8-449a-8e27-5b1e08f953cc",
+      "parcelas": 1,
+      "operacoesNaCentral": 1,
+      "eventos": [
+        {
+          "sequence": 197,
+          "quando": "2026-11-19T09:58:15.892562Z",
+          "tipo": "SOLICITADA",
+          "detalhe": "Solicitação registrada; aguardando envio à Central. Conta ainda não alterada."
+        },
+        {
+          "sequence": 198,
+          "quando": "2026-11-19T09:58:16.353445Z",
+          "tipo": "ACEITA_CENTRAL",
+          "detalhe": "Central respondeu 202. Protocolo: cad24f3b-a9e8-449a-8e27-5b1e08f953cc"
+        },
+        {
+          "sequence": 199,
+          "quando": "2026-11-19T09:58:17.372048Z",
+          "tipo": "CONSULTA_PENDENTE",
+          "detalhe": "Central ainda está processando a portabilidade."
+        },
+        {
+          "sequence": 200,
+          "quando": "2026-11-19T09:58:17.373177Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 2000 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 201,
+          "quando": "2026-11-19T09:58:19.400092Z",
+          "tipo": "CONSULTA_PENDENTE",
+          "detalhe": "Central ainda está processando a portabilidade."
+        },
+        {
+          "sequence": 202,
+          "quando": "2026-11-19T09:58:19.400872Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 2239 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 203,
+          "quando": "2026-11-19T09:58:21.937345Z",
+          "tipo": "CONSULTA_PENDENTE",
+          "detalhe": "Central ainda está processando a portabilidade."
+        },
+        {
+          "sequence": 204,
+          "quando": "2026-11-19T09:58:21.938523Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 4722 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 205,
+          "quando": "2026-11-19T09:58:26.991012Z",
+          "tipo": "REJEITADA",
+          "detalhe": "Beneficiário não atende à política de portabilidade do convênio."
+        }
+      ]
+    },
+    {
+      "cenario": "Indisponibilidade temporária",
+      "beneficiario": "DEMO-503-1911",
+      "operacao": "6251673e-3814-4be7-825b-ab4092cc3b6f",
+      "status": "CONFIRMADA",
+      "protocolo": "692c1ccb-6086-4c6c-abe2-40a510018e0b",
+      "parcelas": 1,
+      "operacoesNaCentral": 1,
+      "eventos": [
+        {
+          "sequence": 206,
+          "quando": "2026-11-19T09:59:35.675894Z",
+          "tipo": "SOLICITADA",
+          "detalhe": "Solicitação registrada; aguardando envio à Central. Conta ainda não alterada."
+        },
+        {
+          "sequence": 207,
+          "quando": "2026-11-19T09:59:36.047347Z",
+          "tipo": "FALHA_INTEGRACAO",
+          "detalhe": "Central retornou HTTP 503 (indisponível)."
+        },
+        {
+          "sequence": 208,
+          "quando": "2026-11-19T09:59:36.049231Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 1099 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 209,
+          "quando": "2026-11-19T09:59:37.572646Z",
+          "tipo": "FALHA_INTEGRACAO",
+          "detalhe": "Central retornou HTTP 503 (indisponível)."
+        },
+        {
+          "sequence": 210,
+          "quando": "2026-11-19T09:59:37.573271Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 2262 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 211,
+          "quando": "2026-11-19T09:59:40.125441Z",
+          "tipo": "ACEITA_CENTRAL",
+          "detalhe": "Central respondeu 202. Protocolo: 692c1ccb-6086-4c6c-abe2-40a510018e0b"
+        },
+        {
+          "sequence": 212,
+          "quando": "2026-11-19T09:59:41.166629Z",
+          "tipo": "CONSULTA_PENDENTE",
+          "detalhe": "Central ainda está processando a portabilidade."
+        },
+        {
+          "sequence": 213,
+          "quando": "2026-11-19T09:59:41.168042Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 2000 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 214,
+          "quando": "2026-11-19T09:59:43.202101Z",
+          "tipo": "CONSULTA_PENDENTE",
+          "detalhe": "Central ainda está processando a portabilidade."
+        },
+        {
+          "sequence": 215,
+          "quando": "2026-11-19T09:59:43.203498Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 2068 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 216,
+          "quando": "2026-11-19T09:59:45.734098Z",
+          "tipo": "CONSULTA_PENDENTE",
+          "detalhe": "Central ainda está processando a portabilidade."
+        },
+        {
+          "sequence": 217,
+          "quando": "2026-11-19T09:59:45.734833Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 4215 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 218,
+          "quando": "2026-11-19T09:59:50.279518Z",
+          "tipo": "CONFIRMADA",
+          "detalhe": "Central confirmou a portabilidade."
+        },
+        {
+          "sequence": 219,
+          "quando": "2026-11-19T09:59:50.279690Z",
+          "tipo": "CONTA_ATUALIZADA",
+          "detalhe": "Conta de recebimento atualizada para as parcelas confirmadas."
+        }
+      ]
+    },
+    {
+      "cenario": "Timeout na comunicação",
+      "beneficiario": "DEMO-TIMEOUT-1911",
+      "operacao": "3839bc0c-3563-4996-8d43-c04210300eda",
+      "status": "CONFIRMADA",
+      "protocolo": "1d2e0b5a-9817-41da-9fce-cdac3f64875a",
+      "parcelas": 1,
+      "operacoesNaCentral": 1,
+      "eventos": [
+        {
+          "sequence": 220,
+          "quando": "2026-11-19T10:00:04.417025Z",
+          "tipo": "SOLICITADA",
+          "detalhe": "Solicitação registrada; aguardando envio à Central. Conta ainda não alterada."
+        },
+        {
+          "sequence": 221,
+          "quando": "2026-11-19T10:00:06.083262Z",
+          "tipo": "FALHA_INTEGRACAO",
+          "detalhe": "Timeout ao comunicar com a Central; resultado remoto pode estar pendente."
+        },
+        {
+          "sequence": 222,
+          "quando": "2026-11-19T10:00:06.084989Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 1167 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 223,
+          "quando": "2026-11-19T10:00:08.810232Z",
+          "tipo": "FALHA_INTEGRACAO",
+          "detalhe": "Timeout ao comunicar com a Central; resultado remoto pode estar pendente."
+        },
+        {
+          "sequence": 224,
+          "quando": "2026-11-19T10:00:08.811379Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 2217 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 225,
+          "quando": "2026-11-19T10:00:11.351083Z",
+          "tipo": "ACEITA_CENTRAL",
+          "detalhe": "Central respondeu 202. Protocolo: 1d2e0b5a-9817-41da-9fce-cdac3f64875a"
+        },
+        {
+          "sequence": 226,
+          "quando": "2026-11-19T10:00:12.372198Z",
+          "tipo": "CONSULTA_PENDENTE",
+          "detalhe": "Central ainda está processando a portabilidade."
+        },
+        {
+          "sequence": 227,
+          "quando": "2026-11-19T10:00:12.373547Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 2000 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 228,
+          "quando": "2026-11-19T10:00:14.403737Z",
+          "tipo": "CONFIRMADA",
+          "detalhe": "Central confirmou a portabilidade."
+        },
+        {
+          "sequence": 229,
+          "quando": "2026-11-19T10:00:14.403997Z",
+          "tipo": "CONTA_ATUALIZADA",
+          "detalhe": "Conta de recebimento atualizada para as parcelas confirmadas."
+        }
+      ]
+    },
+    {
+      "cenario": "Timeout depois do aceite",
+      "beneficiario": "DEMO-ACEITE-1911",
+      "operacao": "0ad55641-ff3d-4028-a4e9-9ab1fdfc85c7",
+      "status": "CONFIRMADA",
+      "protocolo": "7df90f9c-a9e9-4560-a726-32945555c6a1",
+      "parcelas": 1,
+      "operacoesNaCentral": 1,
+      "eventos": [
+        {
+          "sequence": 230,
+          "quando": "2026-11-19T10:00:30.026878Z",
+          "tipo": "SOLICITADA",
+          "detalhe": "Solicitação registrada; aguardando envio à Central. Conta ainda não alterada."
+        },
+        {
+          "sequence": 231,
+          "quando": "2026-11-19T10:00:31.742762Z",
+          "tipo": "FALHA_INTEGRACAO",
+          "detalhe": "Timeout ao comunicar com a Central; resultado remoto pode estar pendente."
+        },
+        {
+          "sequence": 232,
+          "quando": "2026-11-19T10:00:31.745283Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 1170 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 233,
+          "quando": "2026-11-19T10:00:33.276580Z",
+          "tipo": "ACEITA_CENTRAL",
+          "detalhe": "Central respondeu 202. Protocolo: 7df90f9c-a9e9-4560-a726-32945555c6a1"
+        },
+        {
+          "sequence": 234,
+          "quando": "2026-11-19T10:00:34.301677Z",
+          "tipo": "CONSULTA_PENDENTE",
+          "detalhe": "Central ainda está processando a portabilidade."
+        },
+        {
+          "sequence": 235,
+          "quando": "2026-11-19T10:00:34.303851Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 2000 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 236,
+          "quando": "2026-11-19T10:00:36.331588Z",
+          "tipo": "CONSULTA_PENDENTE",
+          "detalhe": "Central ainda está processando a portabilidade."
+        },
+        {
+          "sequence": 237,
+          "quando": "2026-11-19T10:00:36.333230Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 2247 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 238,
+          "quando": "2026-11-19T10:00:38.871631Z",
+          "tipo": "CONFIRMADA",
+          "detalhe": "Central confirmou a portabilidade."
+        },
+        {
+          "sequence": 239,
+          "quando": "2026-11-19T10:00:38.871836Z",
+          "tipo": "CONTA_ATUALIZADA",
+          "detalhe": "Conta de recebimento atualizada para as parcelas confirmadas."
+        }
+      ]
+    },
+    {
+      "cenario": "Resposta inesperada",
+      "beneficiario": "DEMO-JSON-1911",
+      "operacao": "ee7843c8-e3bf-4091-aa6b-73fb2f248c95",
+      "status": "CONFIRMADA",
+      "protocolo": "4ee71887-c87e-4ee5-8b65-f75637763901",
+      "parcelas": 1,
+      "operacoesNaCentral": 1,
+      "eventos": [
+        {
+          "sequence": 240,
+          "quando": "2026-11-19T10:01:09.422448Z",
+          "tipo": "SOLICITADA",
+          "detalhe": "Solicitação registrada; aguardando envio à Central. Conta ainda não alterada."
+        },
+        {
+          "sequence": 241,
+          "quando": "2026-11-19T10:01:09.611094Z",
+          "tipo": "FALHA_INTEGRACAO",
+          "detalhe": "Resposta inesperada da Central: JSON inválido."
+        },
+        {
+          "sequence": 242,
+          "quando": "2026-11-19T10:01:09.612611Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 1072 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 243,
+          "quando": "2026-11-19T10:01:11.133798Z",
+          "tipo": "FALHA_INTEGRACAO",
+          "detalhe": "Resposta inesperada da Central: JSON inválido."
+        },
+        {
+          "sequence": 244,
+          "quando": "2026-11-19T10:01:11.134716Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 2274 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 245,
+          "quando": "2026-11-19T10:01:13.676196Z",
+          "tipo": "ACEITA_CENTRAL",
+          "detalhe": "Central respondeu 202. Protocolo: 4ee71887-c87e-4ee5-8b65-f75637763901"
+        },
+        {
+          "sequence": 246,
+          "quando": "2026-11-19T10:01:14.700331Z",
+          "tipo": "CONSULTA_PENDENTE",
+          "detalhe": "Central ainda está processando a portabilidade."
+        },
+        {
+          "sequence": 247,
+          "quando": "2026-11-19T10:01:14.701979Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 2000 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 248,
+          "quando": "2026-11-19T10:01:16.722674Z",
+          "tipo": "CONSULTA_PENDENTE",
+          "detalhe": "Central ainda está processando a portabilidade."
+        },
+        {
+          "sequence": 249,
+          "quando": "2026-11-19T10:01:16.725079Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 2038 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 250,
+          "quando": "2026-11-19T10:01:19.261595Z",
+          "tipo": "CONSULTA_PENDENTE",
+          "detalhe": "Central ainda está processando a portabilidade."
+        },
+        {
+          "sequence": 251,
+          "quando": "2026-11-19T10:01:19.262859Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 4018 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 252,
+          "quando": "2026-11-19T10:01:23.316345Z",
+          "tipo": "CONFIRMADA",
+          "detalhe": "Central confirmou a portabilidade."
+        },
+        {
+          "sequence": 253,
+          "quando": "2026-11-19T10:01:23.316499Z",
+          "tipo": "CONTA_ATUALIZADA",
+          "detalhe": "Conta de recebimento atualizada para as parcelas confirmadas."
+        }
+      ]
+    },
+    {
+      "cenario": "Assinatura inválida",
+      "beneficiario": "DEMO-HMAC-1911",
+      "operacao": "fa4b1a00-38b9-40a0-bc9f-11e6d8258b9c",
+      "status": "CONFIRMADA",
+      "protocolo": "2db437f2-0ae4-49be-a1b2-0fb8ab5d9c64",
+      "parcelas": 1,
+      "operacoesNaCentral": 1,
+      "eventos": [
+        {
+          "sequence": 254,
+          "quando": "2026-11-19T10:01:42.304692Z",
+          "tipo": "SOLICITADA",
+          "detalhe": "Solicitação registrada; aguardando envio à Central. Conta ainda não alterada."
+        },
+        {
+          "sequence": 255,
+          "quando": "2026-11-19T10:01:42.499831Z",
+          "tipo": "FALHA_INTEGRACAO",
+          "detalhe": "Integridade da resposta da Central inválida (HMAC)."
+        },
+        {
+          "sequence": 256,
+          "quando": "2026-11-19T10:01:42.501303Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 1247 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 257,
+          "quando": "2026-11-19T10:01:44.020598Z",
+          "tipo": "FALHA_INTEGRACAO",
+          "detalhe": "Integridade da resposta da Central inválida (HMAC)."
+        },
+        {
+          "sequence": 258,
+          "quando": "2026-11-19T10:01:44.021526Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 2468 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 259,
+          "quando": "2026-11-19T10:01:46.556305Z",
+          "tipo": "ACEITA_CENTRAL",
+          "detalhe": "Central respondeu 202. Protocolo: 2db437f2-0ae4-49be-a1b2-0fb8ab5d9c64"
+        },
+        {
+          "sequence": 260,
+          "quando": "2026-11-19T10:01:47.574351Z",
+          "tipo": "CONSULTA_PENDENTE",
+          "detalhe": "Central ainda está processando a portabilidade."
+        },
+        {
+          "sequence": 261,
+          "quando": "2026-11-19T10:01:47.575544Z",
+          "tipo": "REAGENDADA",
+          "detalhe": "Nova tentativa em 2000 ms (backoff com jitter e Retry-After)."
+        },
+        {
+          "sequence": 262,
+          "quando": "2026-11-19T10:01:49.603826Z",
+          "tipo": "CONFIRMADA",
+          "detalhe": "Central confirmou a portabilidade."
+        },
+        {
+          "sequence": 263,
+          "quando": "2026-11-19T10:01:49.604014Z",
+          "tipo": "CONTA_ATUALIZADA",
+          "detalhe": "Conta de recebimento atualizada para as parcelas confirmadas."
+        }
+      ]
+    }
+  ]
+}

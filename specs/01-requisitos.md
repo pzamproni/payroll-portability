@@ -16,7 +16,7 @@ Fonte: desafio técnico Fullstack React + Java fornecido pelo candidato. SDD sig
 | RNF02 | Idempotência | Mesma chave + mesmo conteúdo retorna mesma operação; mesma chave + conteúdo diferente retorna 409. Restrição UNIQUE e transação nos dois serviços. Timeout após aceite remoto não duplica. |
 | RNF03 | Retry | Backoff exponencial com jitter limitado, respeito a Retry-After, timeout HTTP e limite de tentativas. Após limite, revisão manual com retomada segura, sem perder protocolo. |
 | RNF04 | Persistência | Operações, reservas, autorizações, auditoria e agendamento sobrevivem ao reinício de cada serviço. |
-| RNF05 | Entrega | React/TypeScript, Java 21, testes críticos, README, harness de IA e Dockerfiles multistage. |
+| RNF05 | Entrega | React/TypeScript, Java 21, testes críticos, README, especificações, decisões técnicas, evidências e Dockerfiles multistage. |
 
 ## Cenários de demonstração determinísticos
 

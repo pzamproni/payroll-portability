@@ -47,3 +47,9 @@ O workflow de CI está versionado; seu resultado remoto deve ser consultado na a
 ## Capturas da aplicação
 
 [Desktop](screenshots/desktop.png) · [Celular](screenshots/mobile.png)
+
+## Demonstração manual no navegador interno
+
+Em 19/11/2026, os sete cenários foram executados pela interface com beneficiários fictícios novos. A confirmação normal portou duas parcelas (R$ 715,00). A rejeição mostrou o motivo, preservou a conta e liberou a parcela; as cinco falhas de integração foram auditadas e recuperaram até CONFIRMADA. Uma consulta SQL somente leitura confirmou exatamente uma operação na Central para cada beneficiário, inclusive nos timeouts.
+
+[Identificadores, protocolos e trilhas da demonstração](evidence/demonstracao-manual.json).
