@@ -25,3 +25,7 @@ NORMAL confirma depois de alguns segundos; REJECT rejeita; UNAVAILABLE retorna 5
 ## Limites explícitos
 
 Dados exclusivamente fictícios. Sem autenticação de usuário por estar fora do enunciado; publicar o código não significa expor o serviço financeiro à internet. Não há transferência de dinheiro. Central é um simulador isolado e persistente. Um worker por instância, múltiplas instâncias protegidas por lock transacional da operação.
+
+## Critérios de aceite executáveis
+
+Todos os critérios detalhados estão em [Gherkin em português](acceptance.feature). Cada cenário AC possui um teste unitário, de componente ou de integração específico em [acceptance-map.json](acceptance-map.json). O verificador `python3 scripts/check_acceptance.py` falha se um cenário não estiver mapeado ou se o teste correspondente não existir. Os testes são executados pelo Maven/Vitest; não há dependência de Cucumber ou interpretação automática dos passos. Testes de Compose e Playwright complementam essa cobertura.

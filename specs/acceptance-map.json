@@ -1,0 +1,278 @@
+{
+  "AC-001": {
+    "scenario": "Validar mensagem íntegra",
+    "file": "backend/src/test/java/br/com/portabilidade/HmacTest.java",
+    "test": "signsAndVerifiesExactBytes",
+    "type": "unit"
+  },
+  "AC-002": {
+    "scenario": "Recusar corpo adulterado",
+    "file": "backend/src/test/java/br/com/portabilidade/HmacTest.java",
+    "test": "rejectsTamperedBody",
+    "type": "unit"
+  },
+  "AC-003": {
+    "scenario": "Recusar mensagem expirada",
+    "file": "backend/src/test/java/br/com/portabilidade/HmacTest.java",
+    "test": "rejectsExpiredTimestamp",
+    "type": "unit"
+  },
+  "AC-004": {
+    "scenario": "Recusar timestamp futuro",
+    "file": "backend/src/test/java/br/com/portabilidade/HmacTest.java",
+    "test": "rejectsFutureTimestamp",
+    "type": "unit"
+  },
+  "AC-005": {
+    "scenario": "Recusar assinatura malformada",
+    "file": "backend/src/test/java/br/com/portabilidade/HmacTest.java",
+    "test": "rejectsMalformedSignature",
+    "type": "unit"
+  },
+  "AC-006": {
+    "scenario": "Vincular resposta ao nonce e status HTTP",
+    "file": "backend/src/test/java/br/com/portabilidade/HmacTest.java",
+    "test": "responseIsBoundToRequestNonceAndStatus",
+    "type": "unit"
+  },
+  "AC-007": {
+    "scenario": "Vincular chave idempotente à assinatura",
+    "file": "backend/src/test/java/br/com/portabilidade/HmacTest.java",
+    "test": "requestBindsMethodPathAndIdempotencyKey",
+    "type": "unit"
+  },
+  "AC-008": {
+    "scenario": "Exigir opt-in antes da consulta",
+    "file": "backend/src/test/java/br/com/portabilidade/PortabilityTest.java",
+    "test": "requiresOptIn",
+    "type": "integration"
+  },
+  "AC-009": {
+    "scenario": "Exigir chave de idempotência",
+    "file": "backend/src/test/java/br/com/portabilidade/PortabilityTest.java",
+    "test": "rejectsMissingKey",
+    "type": "integration"
+  },
+  "AC-010": {
+    "scenario": "Persistir intenção antes do envio remoto",
+    "file": "backend/src/test/java/br/com/portabilidade/PortabilityTest.java",
+    "test": "persistsIntentAndAuditBeforeSending",
+    "type": "integration"
+  },
+  "AC-011": {
+    "scenario": "Reenviar solicitação idêntica",
+    "file": "backend/src/test/java/br/com/portabilidade/PortabilityTest.java",
+    "test": "sameKeySameRequestReturnsSameOperation",
+    "type": "integration"
+  },
+  "AC-012": {
+    "scenario": "Recusar conteúdo diferente com a mesma chave",
+    "file": "backend/src/test/java/br/com/portabilidade/PortabilityTest.java",
+    "test": "changedPayloadSameKeyIsConflict",
+    "type": "integration"
+  },
+  "AC-013": {
+    "scenario": "Reservar parcelas em operações distintas",
+    "file": "backend/src/test/java/br/com/portabilidade/PortabilityTest.java",
+    "test": "reservesAgainstDifferentKeys",
+    "type": "integration"
+  },
+  "AC-014": {
+    "scenario": "Recusar parcela paga ou seleção repetida",
+    "file": "backend/src/test/java/br/com/portabilidade/PortabilityTest.java",
+    "test": "rejectsPaidInstallmentAndDuplicateSelection",
+    "type": "integration"
+  },
+  "AC-015": {
+    "scenario": "Deduplicar envios simultâneos",
+    "file": "backend/src/test/java/br/com/portabilidade/PortabilityTest.java",
+    "test": "concurrentSameKeyCreatesOneOperation",
+    "type": "integration"
+  },
+  "AC-016": {
+    "scenario": "Atualizar conta somente após confirmação",
+    "file": "backend/src/test/java/br/com/portabilidade/PortabilityTest.java",
+    "test": "confirmationAtomicallyUpdatesAccountAndAudit",
+    "type": "integration"
+  },
+  "AC-017": {
+    "scenario": "Preservar conta na rejeição",
+    "file": "backend/src/test/java/br/com/portabilidade/PortabilityTest.java",
+    "test": "rejectionPreservesAccountAndReleasesReservation",
+    "type": "integration"
+  },
+  "AC-018": {
+    "scenario": "Recuperar falha transitória sem nova chave",
+    "file": "backend/src/test/java/br/com/portabilidade/PortabilityTest.java",
+    "test": "temporaryFailureSchedulesRetryWithOriginalKey",
+    "type": "integration"
+  },
+  "AC-019": {
+    "scenario": "Retomar após esgotamento das tentativas",
+    "file": "backend/src/test/java/br/com/portabilidade/PortabilityTest.java",
+    "test": "exhaustedRetriesRequireReviewAndResumePreservesProtocol",
+    "type": "integration"
+  },
+  "AC-020": {
+    "scenario": "Separar falha técnica de rejeição de negócio",
+    "file": "backend/src/test/java/br/com/portabilidade/PortabilityTest.java",
+    "test": "nonRetryableFailureGoesToReviewWithoutRejectingBusiness",
+    "type": "integration"
+  },
+  "AC-021": {
+    "scenario": "Impedir retomada fora do estado de revisão",
+    "file": "backend/src/test/java/br/com/portabilidade/PortabilityTest.java",
+    "test": "resumeCannotChangeTerminalState",
+    "type": "integration"
+  },
+  "AC-022": {
+    "scenario": "Limitar backoff e respeitar Retry-After",
+    "file": "backend/src/test/java/br/com/portabilidade/PortabilityTest.java",
+    "test": "exponentialBackoffIsCappedAndRespectsRetryAfter",
+    "type": "integration"
+  },
+  "AC-023": {
+    "scenario": "Recuperar intenção com novo worker",
+    "file": "backend/src/test/java/br/com/portabilidade/PortabilityTest.java",
+    "test": "newWorkerInstanceRecoversPersistedIntent",
+    "type": "integration"
+  },
+  "AC-024": {
+    "scenario": "Resolver concorrência entre chaves distintas",
+    "file": "backend/src/test/java/br/com/portabilidade/PortabilityTest.java",
+    "test": "concurrentDifferentKeysReserveOnlyOnce",
+    "type": "integration"
+  },
+  "AC-025": {
+    "scenario": "Executar contrato HTTP assinado completo",
+    "file": "backend/src/test/java/br/com/portabilidade/CentralHttpTest.java",
+    "test": "realHttpRoundtripSignsBothDirectionsAndIsIdempotent",
+    "type": "integration"
+  },
+  "AC-026": {
+    "scenario": "Receber rejeição assinada",
+    "file": "backend/src/test/java/br/com/portabilidade/CentralHttpTest.java",
+    "test": "realHttpRejectionKeepsOriginalAccount",
+    "type": "integration"
+  },
+  "AC-027": {
+    "scenario": "Tratar resposta de integração inválida",
+    "file": "backend/src/test/java/br/com/portabilidade/CentralHttpTest.java",
+    "test": "detectsMalformedResponse",
+    "type": "integration"
+  },
+  "AC-028": {
+    "scenario": "Recuperar resposta adulterada sem duplicar na Central",
+    "file": "backend/src/test/java/br/com/portabilidade/CentralHttpTest.java",
+    "test": "detectsTamperedResponseWithoutDuplicatingRemoteOperation",
+    "type": "integration"
+  },
+  "AC-029": {
+    "scenario": "Interpretar indisponibilidade e Retry-After",
+    "file": "backend/src/test/java/br/com/portabilidade/CentralHttpTest.java",
+    "test": "handles503AndRetryAfter",
+    "type": "integration"
+  },
+  "AC-030": {
+    "scenario": "Proteger endpoints da Central",
+    "file": "backend/src/test/java/br/com/portabilidade/CentralHttpTest.java",
+    "test": "unsignedRequestIsRejected",
+    "type": "integration"
+  },
+  "AC-031": {
+    "scenario": "Impedir reutilização remota da chave",
+    "file": "backend/src/test/java/br/com/portabilidade/CentralHttpTest.java",
+    "test": "mismatchedPayloadSameRemoteKeyIsConflict",
+    "type": "integration"
+  },
+  "AC-032": {
+    "scenario": "Identificar autorização de maneira única",
+    "file": "backend/src/test/java/br/com/portabilidade/CentralHttpTest.java",
+    "test": "remoteAuthorizationIsUnique",
+    "type": "integration"
+  },
+  "AC-033": {
+    "scenario": "Sinalizar processamento assíncrono",
+    "file": "backend/src/test/java/br/com/portabilidade/CentralHttpTest.java",
+    "test": "pendingUses204AndRetryAfter",
+    "type": "integration"
+  },
+  "AC-034": {
+    "scenario": "Resolver timeout após aceite remoto",
+    "file": "backend/src/test/java/br/com/portabilidade/CentralHttpTest.java",
+    "test": "timeoutAfterRemoteAcceptanceReusesSameProtocol",
+    "type": "integration"
+  },
+  "AC-035": {
+    "scenario": "Exibir agenda completa do convênio autorizado",
+    "file": "backend/src/test/java/br/com/portabilidade/CentralHttpTest.java",
+    "test": "agendaIncludesAmountsDatesAgreementAndEligibility",
+    "type": "integration"
+  },
+  "AC-036": {
+    "scenario": "Tratar corpo JSON nulo",
+    "file": "backend/src/test/java/br/com/portabilidade/CentralClientContractTest.java",
+    "test": "signedNullIsAnExplicitIntegrationFailure",
+    "type": "unit"
+  },
+  "AC-037": {
+    "scenario": "Tratar status ausente",
+    "file": "backend/src/test/java/br/com/portabilidade/CentralClientContractTest.java",
+    "test": "signedUnknownStatusIsAnExplicitIntegrationFailure",
+    "type": "unit"
+  },
+  "AC-038": {
+    "scenario": "Exigir consentimento verdadeiro na API",
+    "file": "backend/src/test/java/br/com/portabilidade/ApiValidationTest.java",
+    "test": "rejectsConsentFalse",
+    "type": "integration"
+  },
+  "AC-039": {
+    "scenario": "Validar formato da conta de destino",
+    "file": "backend/src/test/java/br/com/portabilidade/ApiValidationTest.java",
+    "test": "rejectsInvalidAccount",
+    "type": "integration"
+  },
+  "AC-040": {
+    "scenario": "Validar chave no contrato público",
+    "file": "backend/src/test/java/br/com/portabilidade/ApiValidationTest.java",
+    "test": "rejectsMissingHttpKey",
+    "type": "integration"
+  },
+  "AC-041": {
+    "scenario": "Recusar cenário desconhecido",
+    "file": "backend/src/test/java/br/com/portabilidade/ApiValidationTest.java",
+    "test": "rejectsUnknownScenario",
+    "type": "integration"
+  },
+  "AC-042": {
+    "scenario": "Informar operação inexistente",
+    "file": "backend/src/test/java/br/com/portabilidade/ApiValidationTest.java",
+    "test": "unknownOperationReturns404",
+    "type": "integration"
+  },
+  "AC-043": {
+    "scenario": "Capturar consentimento explícito no navegador",
+    "file": "frontend/src/App.test.tsx",
+    "test": "exige consentimento explícito e mostra a agenda somente após autorização",
+    "type": "component"
+  },
+  "AC-044": {
+    "scenario": "Preservar chave de envio no navegador",
+    "file": "frontend/src/api.test.ts",
+    "test": "preserva a chave após resposta ambígua e recarregamento",
+    "type": "component"
+  },
+  "AC-045": {
+    "scenario": "Renovar chave quando a intenção muda",
+    "file": "frontend/src/api.test.ts",
+    "test": "gera nova chave para conteúdo diferente ou solicitação concluída",
+    "type": "component"
+  },
+  "AC-046": {
+    "scenario": "Apresentar falha da Central ao usuário",
+    "file": "frontend/src/api.test.ts",
+    "test": "expõe erro de integração sem silenciar a mensagem",
+    "type": "component"
+  }
+}
