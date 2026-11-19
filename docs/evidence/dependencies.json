@@ -1,0 +1,28 @@
+{
+  "scope": "Combined Java compile/runtime/test classpath; runtime artifact dependencies unchanged",
+  "before": {
+    "jars": 85,
+    "bytes": 51070964
+  },
+  "after": {
+    "jars": 75,
+    "bytes": 49925848
+  },
+  "removed": [
+    "android-json-0.0.20131108.vaadin1.jar",
+    "awaitility-4.2.2.jar",
+    "jakarta.activation-api-2.1.4.jar",
+    "jakarta.xml.bind-api-4.0.5.jar",
+    "jsonassert-1.5.3.jar",
+    "junit-jupiter-5.12.2.jar",
+    "junit-jupiter-params-5.12.2.jar",
+    "mockito-junit-jupiter-5.17.0.jar",
+    "spring-boot-starter-test-3.5.16.jar",
+    "xmlunit-core-2.10.4.jar"
+  ],
+  "added": [],
+  "productionArtifact": {
+    "runtimeJars": 47,
+    "testFrameworkJars": []
+  }
+}

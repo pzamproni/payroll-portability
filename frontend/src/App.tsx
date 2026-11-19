@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import {
   ArrowDownLeft,
   ArrowRight,
@@ -37,7 +37,7 @@ export default function App() {
   const [operations, setOperations] = useState<Operation[]>([]),
     [activeId, setActiveId] = useState<string | null>(null);
   const [account, setAccount] = useState({ banco: "", agencia: "", conta: "" }),
-    [creditor, setCreditor] = useState("Elo Crédito");
+    [creditor, setCreditor] = useState("Payroll Finance");
   const [scenario, setScenario] = useState<Scenario>("NORMAL"),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
@@ -93,7 +93,7 @@ export default function App() {
       clearTimeout(timer);
     };
   }, [refresh]);
-  async function authorize(event: React.FormEvent) {
+  async function authorize(event: FormEvent) {
     event.preventDefault();
     setBusy(true);
     setError("");
@@ -120,7 +120,7 @@ export default function App() {
       setBusy(false);
     }
   }
-  async function submit(event: React.FormEvent) {
+  async function submit(event: FormEvent) {
     event.preventDefault();
     if (!authorized || selected.length === 0) return;
     setBusy(true);
@@ -183,9 +183,9 @@ export default function App() {
   return (
     <div className="app-shell">
       <aside className="sidebar">
-        <a href="#" className="brand" aria-label="Elo início">
-          <span className="brand-symbol">e</span>elo
-          <span className="brand-period">.</span>
+        <a href="#" className="brand" aria-label="Payroll Portability início">
+          <span className="brand-symbol">P</span>
+          <span className="brand-name">Payroll<span>Portability</span></span>
         </a>
         <p className="workspace-label">PORTABILIDADE DE CONVÊNIOS</p>
         <nav aria-label="Navegação principal">
@@ -641,7 +641,7 @@ export default function App() {
             busy={busy}
           />
           <footer>
-            <span className="footer-brand">elo.</span>
+            <span className="footer-brand">Payroll Portability</span>
             <p>Conectando convênios. Simplificando caminhos.</p>
             <span>Projeto demonstrativo · React + Java</span>
           </footer>

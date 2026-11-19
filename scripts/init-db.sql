@@ -1,1 +1,1 @@
-CREATE DATABASE central OWNER portabilidade;
+CREATE DATABASE central;

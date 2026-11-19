@@ -1,4 +1,4 @@
-# Elo · Portabilidade de convênios
+# Payroll Portability
 
 Plataforma fullstack para simular portabilidade de convênios de desconto em folha: consentimento → agenda → seleção → solicitação → confirmação assíncrona → atualização da conta, com histórico auditável.
 
@@ -11,8 +11,8 @@ Plataforma fullstack para simular portabilidade de convênios de desconto em fol
 Requisitos: Docker Engine/Desktop com Docker Compose v2, acesso à internet no primeiro build e aproximadamente 3 GB de RAM disponíveis.
 
 ```sh
-git clone https://github.com/pzamproni/portabilidade-convenios.git
-cd portabilidade-convenios
+git clone https://github.com/pzamproni/payroll-portability.git
+cd payroll-portability
 cp .env.example .env
 docker compose up --build -d --wait --wait-timeout 180
 ```
@@ -27,7 +27,7 @@ docker compose logs -f api central
 docker compose down       # preserva os dados no volume
 ```
 
-`docker compose down -v` remove os dados de demonstração. A porta web fica vinculada a `127.0.0.1`; Postgres, API e Central não publicam portas no host por padrão. Os Dockerfiles de Java e React são **multistage**, executam testes no build e usam usuários sem privilégios no runtime.
+`docker compose down -v` remove os dados de demonstração. O volume padrão é `payroll-portability-data`; `POSTGRES_VOLUME_NAME` permite reutilizar um volume existente sem migrar ou apagar dados; nesse caso, use também `POSTGRES_VOLUME_EXTERNAL=true`. Volumes externos não são apagados por `down -v`. `DATABASE_USER` e `DATABASE_NAME` também são configuráveis para essa compatibilidade. A porta web fica vinculada a `127.0.0.1`; Postgres, API e Central não publicam portas no host por padrão. Os Dockerfiles de Java e React são **multistage**, executam testes no build e usam usuários sem privilégios no runtime.
 
 ## Demonstração em 2 minutos
 
@@ -73,15 +73,44 @@ flowchart LR
 
 Os bancos são separados logicamente no mesmo Postgres, sem transação distribuída. Durante a confirmação remota pode existir uma pequena janela antes da atualização local; retry idempotente converge os estados.
 
+## Backend: Hexagonal Architecture
+
+O monorepo organiza frontend e backend no mesmo repositório; a arquitetura hexagonal organiza as dependências dentro do backend. As duas decisões são independentes.
+
+```text
+backend/src/main/java/com/payrollportability/
+├── domain/                         # modelos e erros de negócio; apenas Java
+├── application/
+│   ├── port/inbound/               # contratos dos casos de uso
+│   ├── port/outbound/              # repositórios, CentralGateway e UnitOfWork
+│   └── service/                    # autorização, portabilidade e processamento
+├── adapter/
+│   ├── inbound/web/                # controllers, validação e mapeamento HTTP
+│   ├── inbound/scheduling/         # disparo do processamento periódico
+│   ├── outbound/persistence/       # JDBC e transação Spring
+│   └── outbound/central/           # cliente HTTP assinado da Central
+├── infrastructure/                 # JSON e HMAC usados pelos adaptadores
+├── bootstrap/                      # composição dos casos de uso no Spring
+├── simulator/                      # sistema externo fictício, isolado do produto
+└── Application.java
+```
+
+`PortabilityService` e `OperationProcessor` não importam Spring, JDBC, HTTP, Jackson nem Jakarta. SQL existe nos adaptadores de persistência e no simulador externo. `ApiController` depende de `PortabilityUseCases`; o scheduler depende de `OperationProcessing`. O adapter HTTP da Central implementa `CentralGateway`, e o adapter JDBC implementa as portas de repositório. `UnitOfWork` mantém a atomicidade sem expor `TransactionTemplate` aos casos de uso.
+
+A validação de formato HTTP está em `HttpRequests`; os modelos internos não carregam anotações de transporte. Os erros de negócio usam categorias internas, convertidas em status HTTP pelo adapter de entrada. Três testes ArchUnit verificam essas fronteiras (AC-048 a AC-050), além dos cenários funcionais já existentes.
+
+[Especificação da arquitetura](specs/04-hexagonal-architecture.md) · [Decisões e trade-offs](docs/adr.md).
+
 ## SDD e documentação técnica
 
 O primeiro commit contém as especificações antes da implementação:
 
 - [Requisitos e critérios de aceite](specs/01-requisitos.md)
 - [Contratos e máquina de estados](specs/02-contratos.md)
-- [Critérios de aceite em Gherkin](specs/acceptance.feature) — 47 cenários com teste individual
+- [Critérios de aceite em Gherkin](specs/acceptance.feature) — 51 cenários com teste individual
 - [Rastreabilidade cenário → teste](specs/acceptance-map.json)
 - [Plano de verificação](specs/03-plano-verificacao.md)
+- [Fronteiras da arquitetura hexagonal](specs/04-hexagonal-architecture.md)
 - [Decisões arquiteturais e trade-offs](docs/adr.md)
 - [Resultados verificados e limitações](docs/verification.md)
 - [Demonstração manual dos sete cenários](docs/evidence/demonstracao-manual.json)
@@ -127,13 +156,13 @@ Em terminais separados, exporte as variáveis de `.env` e execute:
 ```sh
 # Central
 APP_ROLE=central PORT=8081 DATABASE_URL=jdbc:postgresql://localhost:5433/central \
-DATABASE_USER=portabilidade ./mvnw -f backend/pom.xml spring-boot:run
+DATABASE_USER=${DATABASE_USER} ./mvnw -f backend/pom.xml spring-boot:run
 ```
 
 ```sh
 # API
-APP_ROLE=api PORT=8080 DATABASE_URL=jdbc:postgresql://localhost:5433/portabilidade \
-DATABASE_USER=portabilidade CENTRAL_URL=http://localhost:8081 \
+APP_ROLE=api PORT=8080 DATABASE_URL=jdbc:postgresql://localhost:5433/${DATABASE_NAME} \
+DATABASE_USER=${DATABASE_USER} CENTRAL_URL=http://localhost:8081 \
 ./mvnw -f backend/pom.xml spring-boot:run
 ```
 
@@ -163,7 +192,7 @@ Exemplo de operação, após autorização e obtenção de um `parcelaId` real d
 {
   "beneficiarioId": "BEN-001",
   "parcelas": ["id-retornado-pela-agenda"],
-  "credorCessionario": "Elo Crédito",
+  "credorCessionario": "Payroll Finance",
   "contaRecebimento": {"banco": "001", "agencia": "1234", "conta": "12345-6"},
   "cenario": "NORMAL"
 }
@@ -181,9 +210,11 @@ Erros seguem `{ "code": "CHAVE_REUTILIZADA", "message": "..." }`. Consulte [o co
 | Java HttpClient / JCA | HTTP com timeout e HMAC sem dependências extras. |
 | React 19 / TypeScript / Vite | UI tipada, componentes e build estático enxuto. |
 | Lucide | Ícones consistentes e importação somente dos usados. |
-| JUnit / Mockito / AssertJ / H2 / JaCoCo | Testes de invariantes, falhas e cobertura inspecionável. |
+| JUnit / Mockito / AssertJ / H2 / JaCoCo / ArchUnit | Testes de invariantes, falhas, cobertura e fronteiras arquiteturais. |
 | Vitest / Testing Library / Playwright | Comportamento de formulários, idempotência do navegador e jornadas reais. |
 | Nginx unprivileged | Estáticos e proxy no mesmo origin, runtime sem Node. |
+
+Imports Java são explícitos em produção e testes, com bloqueio automatizado de curingas (AC-051). TypeScript rejeita imports, variáveis e parâmetros não usados. As bibliotecas Java de teste são declaradas individualmente, sem o agregado `spring-boot-starter-test`; a redução medida do classpath está em [dependencies.json](docs/evidence/dependencies.json). Isso reduz resolução de dependências de teste; imports com `*` por si só não alteram downloads nem tamanho do JAR.
 
 Versões Java são geridas pelo parent Maven fixado; versões JS exatas constam em `package-lock.json`. Fontes web têm fallback local; funcionalidade não depende de Google Fonts.
 

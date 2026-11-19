@@ -4,7 +4,7 @@ import type { OperationRequest } from "./types";
 const request: OperationRequest = {
   beneficiarioId: "BEN-001",
   parcelas: ["b", "a"],
-  credorCessionario: "Elo",
+  credorCessionario: "Payroll Finance",
   contaRecebimento: { banco: "001", agencia: "1", conta: "2-3" },
   cenario: "NORMAL",
 };

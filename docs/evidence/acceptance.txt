@@ -1,2 +1,2 @@
-PASS: 47 Gherkin scenarios; 47 distinct executable tests; zero unmapped criteria.
-PASS: all 47 acceptance criteria have a passing, non-skipped test result.
+PASS: 51 Gherkin scenarios; 51 distinct executable tests; zero unmapped criteria.
+PASS: all 51 acceptance criteria have a passing, non-skipped test result.

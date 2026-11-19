@@ -8,7 +8,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import type { Operation } from "./types";
-import { money, time, statusLabel } from "./types";
+import { time, statusLabel } from "./types";
 type Props = {
   operations: Operation[];
   activeId: string | null;

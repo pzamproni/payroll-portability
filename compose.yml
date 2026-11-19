@@ -1,6 +1,6 @@
-name: elo-portabilidade
+name: payroll-portability
 x-java-environment: &java-environment
-  DATABASE_USER: portabilidade
+  DATABASE_USER: ${DATABASE_USER:-payroll}
   DATABASE_PASSWORD: ${DATABASE_PASSWORD:?Copie .env.example para .env}
   HMAC_SECRET: ${HMAC_SECRET:?Defina HMAC_SECRET em .env}
   PORT: 8080
@@ -9,20 +9,20 @@ services:
   database:
     image: postgres:17-alpine
     environment:
-      POSTGRES_USER: portabilidade
+      POSTGRES_USER: ${DATABASE_USER:-payroll}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?Copie .env.example para .env}
-      POSTGRES_DB: portabilidade
+      POSTGRES_DB: ${DATABASE_NAME:-payroll_portability}
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/01-central.sql:ro
     healthcheck:
-      test: [CMD-SHELL, "pg_isready -U portabilidade -d portabilidade"]
+      test: [CMD-SHELL, "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 5s
       timeout: 3s
       retries: 10
     restart: unless-stopped
   central:
-    image: elo-portabilidade-java:local
+    image: payroll-portability-java:local
     build: ./backend
     environment:
       <<: *java-environment
@@ -32,12 +32,12 @@ services:
       database: { condition: service_healthy }
     restart: unless-stopped
   api:
-    image: elo-portabilidade-java:local
+    image: payroll-portability-java:local
     build: ./backend
     environment:
       <<: *java-environment
       APP_ROLE: api
-      DATABASE_URL: jdbc:postgresql://database:5432/portabilidade
+      DATABASE_URL: jdbc:postgresql://database:5432/${DATABASE_NAME:-payroll_portability}
       CENTRAL_URL: http://central:8080
     depends_on:
       central: { condition: service_healthy }
@@ -51,3 +51,5 @@ services:
     restart: unless-stopped
 volumes:
   postgres-data:
+    name: ${POSTGRES_VOLUME_NAME:-payroll-portability-data}
+    external: ${POSTGRES_VOLUME_EXTERNAL:-false}

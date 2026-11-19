@@ -2,5 +2,5 @@
   "persistence": "passed",
   "audit_update_blocked": true,
   "one_operation_each_database": true,
-  "protocol_preserved": "0bf533c9-b2ec-4eac-bffb-e79a165563a0"
+  "protocol_preserved": "f66c904c-fd93-4d78-b301-fc5cf92fdded"
 }

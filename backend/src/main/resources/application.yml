@@ -1,9 +1,9 @@
 spring:
   application:
-    name: portabilidade-${app.role}
+    name: payroll-portability-${app.role}
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/portabilidade}
-    username: ${DATABASE_USER:portabilidade}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/payroll_portability}
+    username: ${DATABASE_USER:payroll}
     password: ${DATABASE_PASSWORD}
   flyway:
     locations: classpath:db/migration,classpath:db/postgresql

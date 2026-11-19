@@ -4,16 +4,16 @@ Execução local em 19/11/2026, macOS/ARM64, Java 21 e Docker/Colima. Resultado:
 
 | Verificação | Resultado | Evidência |
 |---|---|---|
-| Java / Maven verify | 42 testes, zero falhas, zero erros e zero ignorados | [Resumo por suíte](evidence/java-tests.json) |
+| Java / Maven verify | 46 testes, zero falhas, zero erros e zero ignorados | [Resumo por suíte](evidence/java-tests.json) |
 | Vitest | 4 testes passaram | [Casos executados](evidence/frontend-tests.json) |
-| Gherkin | 47 cenários → 47 testes distintos, todos com resultado aprovado | [Verificador](evidence/acceptance.txt) |
+| Gherkin | 51 cenários → 51 testes distintos, todos com resultado aprovado | [Verificador](evidence/acceptance.txt) |
 | TypeScript / Vite | typecheck e build de produção passaram | `npm run build` |
 | Dependências npm | zero vulnerabilidades no momento da checagem | `npm audit --audit-level=moderate` |
 | Docker | build multistage Java/React com testes; database/central/api/web healthy | `docker compose ps` |
 | Integração PostgreSQL | 7 cenários passaram; 6 envios simultâneos por cenário | [Resultados reais](evidence/smoke.json) |
 | Persistência / auditoria | reinício dos quatro serviços, protocolo preservado, uma operação em cada banco, UPDATE de auditoria bloqueado | [Resultado](evidence/persistence.json) |
 | Navegador | 2 jornadas passaram: confirmação e rejeição; layout 390 px sem overflow | [Playwright](evidence/playwright.txt) |
-| Cobertura Java local | 84,6% das linhas; 73,8% das branches | [JaCoCo resumido](evidence/coverage.json) |
+| Cobertura Java local | 85,4% das linhas; 73,0% das branches | [JaCoCo resumido](evidence/coverage.json) |
 
 As métricas de cobertura se referem aos testes Java locais; os cenários PostgreSQL/Playwright são executados fora da JVM instrumentada. Não representam uma afirmação de ausência de defeitos.
 
@@ -53,3 +53,12 @@ O workflow de CI está versionado; seu resultado remoto deve ser consultado na a
 Em 19/11/2026, os sete cenários foram executados pela interface com beneficiários fictícios novos. A confirmação normal portou duas parcelas (R$ 715,00). A rejeição mostrou o motivo, preservou a conta e liberou a parcela; as cinco falhas de integração foram auditadas e recuperaram até CONFIRMADA. Uma consulta SQL somente leitura confirmou exatamente uma operação na Central para cada beneficiário, inclusive nos timeouts.
 
 [Identificadores, protocolos e trilhas da demonstração](evidence/demonstracao-manual.json).
+
+## Refatoração e identidade Payroll Portability
+
+- Pasta e repositório renomeados para `payroll-portability`; coordenadas Maven, imagens, pacote Java e nome da interface em inglês.
+- Núcleo Java independente de Spring/JDBC/HTTP/JSON, com portas reais e três regras ArchUnit.
+- Imports explícitos em todos os fontes Java e regra de build contra curingas; TypeScript rejeita imports/locais/parâmetros não usados.
+- Test starter agregado substituído pelas bibliotecas usadas: classpath de compile/runtime/test caiu de 85 para 75 JARs. Nenhuma biblioteca de testes foi incluída no artefato de produção; [medição](evidence/dependencies.json).
+- Volume de dados existente preservado como externo. Configuração com nomes ingleses também verificada em um Postgres temporário isolado, removido após o teste.
+- A falta de espaço do host interrompeu um build Docker. Cache de downloads regenerável foi limpo e a VM reiniciada; nenhum volume persistente foi apagado. A reconstrução e os healthchecks passaram após a recuperação.

@@ -1,42 +1,58 @@
 [
   {
-    "name": "br.com.portabilidade.ApiValidationTest",
+    "name": "com.payrollportability.ApiValidationTest",
     "tests": "5",
     "errors": "0",
     "failures": "0",
     "skipped": "0",
-    "time": "3.276"
+    "time": "2.841"
   },
   {
-    "name": "br.com.portabilidade.CentralClientContractTest",
+    "name": "com.payrollportability.ArchitectureTest",
+    "tests": "3",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "1.074"
+  },
+  {
+    "name": "com.payrollportability.CentralClientContractTest",
     "tests": "2",
     "errors": "0",
     "failures": "0",
     "skipped": "0",
-    "time": "0.023"
+    "time": "0.02"
   },
   {
-    "name": "br.com.portabilidade.CentralHttpTest",
+    "name": "com.payrollportability.CentralHttpTest",
     "tests": "11",
     "errors": "0",
     "failures": "0",
     "skipped": "0",
-    "time": "0.972"
+    "time": "0.935"
   },
   {
-    "name": "br.com.portabilidade.HmacTest",
+    "name": "com.payrollportability.HmacTest",
     "tests": "7",
     "errors": "0",
     "failures": "0",
     "skipped": "0",
-    "time": "0.095"
+    "time": "0.098"
   },
   {
-    "name": "br.com.portabilidade.PortabilityTest",
+    "name": "com.payrollportability.PortabilityTest",
     "tests": "17",
     "errors": "0",
     "failures": "0",
     "skipped": "0",
-    "time": "0.312"
+    "time": "0.273"
+  },
+  {
+    "name": "com.payrollportability.SourceConventionsTest",
+    "tests": "1",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "0.005"
   }
 ]
