@@ -70,11 +70,3 @@ A [matriz de revisão](review.md) relaciona os requisitos à implementação e a
 A revisão corrigiu contratos remotos inválidos, corrida idempotente após confirmação, agenda com datas passadas, mutabilidade da projeção de eventos, erros JSON inesperados no navegador e recuperação da atualização da agenda. Também acrescentou provas de múltiplas parcelas, seleção mista atômica e rollback de conta/estado/auditoria. O verificador de aceite agora confere classe e nome do teste, além do resultado sem falha ou skip.
 
 O JAR de produção foi inspecionado: 47 bibliotecas de runtime, nenhuma biblioteca de testes. [Resultado](evidence/runtime-artifact.json). Nenhuma dependência de produção foi adicionada. A [auditoria npm](evidence/npm-audit.json) retornou zero vulnerabilidades nesta execução. As ações do CI foram atualizadas para releases oficiais com runtime atual.
-
-## Revisão completa contra o PDF
-
-A [matriz de revisão](review.md) relaciona os requisitos à implementação e aos testes. Foram acrescentados 16 cenários, elevando a cobertura de aceite de 51 para 67 critérios distintos: 60 testes Java, 6 testes frontend e 1 teste de persistência PostgreSQL. Dois fluxos Playwright e os sete cenários HTTP complementam esse conjunto.
-
-A revisão corrigiu contratos remotos inválidos, corrida idempotente após confirmação, agenda com datas passadas, mutabilidade da projeção de eventos, erros JSON inesperados no navegador e recuperação da atualização da agenda. Também acrescentou provas de múltiplas parcelas, seleção mista atômica e rollback de conta/estado/auditoria. O verificador de aceite agora confere classe e nome do teste, além do resultado sem falha ou skip.
-
-O JAR de produção foi inspecionado: 47 bibliotecas de runtime, nenhuma biblioteca de testes. [Resultado](evidence/runtime-artifact.json). Nenhuma dependência de produção foi adicionada. A [auditoria npm](evidence/npm-audit.json) retornou zero vulnerabilidades nesta execução. As ações do CI foram atualizadas para releases oficiais com runtime atual.
