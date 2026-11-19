@@ -1,0 +1,54 @@
+{
+  "passed": 7,
+  "results": [
+    {
+      "scenario": "NORMAL",
+      "operation": "ee621689-bcfa-4691-a934-68bc94e7549f",
+      "status": "CONFIRMADA",
+      "protocol": "b8ade7d7-5c8c-4526-b04c-409b0454331c",
+      "events": 8
+    },
+    {
+      "scenario": "REJECT",
+      "operation": "a2cdd1c6-5aee-4810-9b08-e95347ca8d29",
+      "status": "REJEITADA",
+      "protocol": "8e8b2ad2-b789-4669-b4a6-266360184a87",
+      "events": 7
+    },
+    {
+      "scenario": "UNAVAILABLE",
+      "operation": "d0ec00c7-638c-457b-ae39-5f7dbcb6934c",
+      "status": "CONFIRMADA",
+      "protocol": "d41a8f08-45c4-4e99-bd16-2906a8cda4f6",
+      "events": 14
+    },
+    {
+      "scenario": "TIMEOUT",
+      "operation": "f4763a18-640a-4f7b-b6d0-645a36334f2a",
+      "status": "CONFIRMADA",
+      "protocol": "f89986ef-46ef-429e-b348-00fd741000eb",
+      "events": 10
+    },
+    {
+      "scenario": "TIMEOUT_AFTER_ACCEPTING",
+      "operation": "0d402bb8-8fea-4ee6-882f-f812a267a742",
+      "status": "CONFIRMADA",
+      "protocol": "33d1fc0a-e1a5-4a0d-96b6-6bf4eef488ad",
+      "events": 8
+    },
+    {
+      "scenario": "INVALID_RESPONSE",
+      "operation": "346e13dc-890a-47cb-850a-1901b115c86f",
+      "status": "CONFIRMADA",
+      "protocol": "84bf29ec-bda2-4291-af08-e4ca52955113",
+      "events": 14
+    },
+    {
+      "scenario": "TAMPERED_RESPONSE",
+      "operation": "18ffa73f-a0cb-437b-950f-a4f492a7407b",
+      "status": "CONFIRMADA",
+      "protocol": "ee609beb-188f-4681-82ef-ff2f1b550805",
+      "events": 10
+    }
+  ]
+}

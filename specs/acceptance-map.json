@@ -255,24 +255,30 @@
     "scenario": "Capturar consentimento explícito no navegador",
     "file": "frontend/src/App.test.tsx",
     "test": "exige consentimento explícito e mostra a agenda somente após autorização",
-    "type": "component"
+    "type": "integration"
   },
   "AC-044": {
     "scenario": "Preservar chave de envio no navegador",
     "file": "frontend/src/api.test.ts",
     "test": "preserva a chave após resposta ambígua e recarregamento",
-    "type": "component"
+    "type": "unit"
   },
   "AC-045": {
     "scenario": "Renovar chave quando a intenção muda",
     "file": "frontend/src/api.test.ts",
     "test": "gera nova chave para conteúdo diferente ou solicitação concluída",
-    "type": "component"
+    "type": "unit"
   },
   "AC-046": {
     "scenario": "Apresentar falha da Central ao usuário",
     "file": "frontend/src/api.test.ts",
     "test": "expõe erro de integração sem silenciar a mensagem",
-    "type": "component"
+    "type": "unit"
+  },
+  "AC-047": {
+    "scenario": "Recuperar operação após reinício e impedir alteração da auditoria",
+    "file": "scripts/persistence.py",
+    "test": "test_restart_and_immutable_audit",
+    "type": "integration"
   }
 }

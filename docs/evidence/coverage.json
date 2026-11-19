@@ -1,0 +1,12 @@
+{
+  "BRANCH": {
+    "covered": 158,
+    "missed": 56,
+    "percent": 73.8
+  },
+  "LINE": {
+    "covered": 544,
+    "missed": 99,
+    "percent": 84.6
+  }
+}

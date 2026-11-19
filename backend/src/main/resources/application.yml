@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: portabilidade-${app.role}
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/portabilidade}
+    username: ${DATABASE_USER:portabilidade}
+    password: ${DATABASE_PASSWORD}
+  flyway:
+    locations: classpath:db/migration,classpath:db/postgresql
+    enabled: true
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: never
+app:
+  role: ${APP_ROLE:api}
+  hmac-secret: ${HMAC_SECRET}
+  central-url: ${CENTRAL_URL:http://localhost:8081}
+  http-timeout-ms: ${HTTP_TIMEOUT_MS:1200}
+  worker-delay-ms: ${WORKER_DELAY_MS:500}
+  retry-base-ms: ${RETRY_BASE_MS:1000}
+  retry-max-ms: ${RETRY_MAX_MS:30000}
+  max-attempts: ${MAX_ATTEMPTS:6}
+  confirmation-delay-ms: ${CONFIRMATION_DELAY_MS:6000}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never

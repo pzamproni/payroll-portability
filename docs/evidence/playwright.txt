@@ -1,0 +1,13 @@
+
+> portabilidade-web@1.0.0 test:e2e
+> playwright test
+
+
+Running 2 tests using 1 worker
+
+(node:50823) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › e2e/portabilidade.spec.ts:3:1 › autorização, seleção, confirmação e trilha de auditoria (10.3s)
+  ✓  2 [chromium] › e2e/portabilidade.spec.ts:27:1 › rejeição exibe motivo e preserva conta de recebimento (13.0s)
+
+  2 passed (24.1s)

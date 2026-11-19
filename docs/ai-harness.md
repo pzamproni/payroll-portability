@@ -25,3 +25,10 @@ Especificações, arquitetura, implementação Java/React, simulador HTTP, teste
 - https://vite.dev/guide/
 
 Versões efetivamente resolvidas estão em `pom.xml` e `package-lock.json`; documentação ao vivo pode mencionar releases ainda não disponíveis no registry do ambiente.
+
+## Orientações adicionais incorporadas
+
+- Java 21 LTS confirmado ao usuário.
+- Frontend e backend no mesmo monorepo.
+- Critérios Gherkin em português com teste individual por cenário; 47 cenários mapeados 1:1 a testes distintos. O verificador também cruza os resultados executados.
+- Publicação na conta pzamproni; navegador interno para criação do repositório e SSH para envio do Git.

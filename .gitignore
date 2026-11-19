@@ -8,3 +8,8 @@
 .DS_Store
 playwright-report/
 test-results/
+
+**/__pycache__/
+*.tsbuildinfo
+frontend/reports/
+reports/

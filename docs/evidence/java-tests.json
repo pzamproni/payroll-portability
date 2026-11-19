@@ -1,0 +1,42 @@
+[
+  {
+    "name": "br.com.portabilidade.ApiValidationTest",
+    "tests": "5",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "3.276"
+  },
+  {
+    "name": "br.com.portabilidade.CentralClientContractTest",
+    "tests": "2",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "0.023"
+  },
+  {
+    "name": "br.com.portabilidade.CentralHttpTest",
+    "tests": "11",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "0.972"
+  },
+  {
+    "name": "br.com.portabilidade.HmacTest",
+    "tests": "7",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "0.095"
+  },
+  {
+    "name": "br.com.portabilidade.PortabilityTest",
+    "tests": "17",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "0.312"
+  }
+]

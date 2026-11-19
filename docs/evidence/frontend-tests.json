@@ -1,0 +1,11 @@
+{
+  "tests": 4,
+  "failures": 0,
+  "errors": 0,
+  "cases": [
+    "exige consentimento explícito e mostra a agenda somente após autorização",
+    "idempotência no navegador > preserva a chave após resposta ambígua e recarregamento",
+    "idempotência no navegador > gera nova chave para conteúdo diferente ou solicitação concluída",
+    "idempotência no navegador > expõe erro de integração sem silenciar a mensagem"
+  ]
+}

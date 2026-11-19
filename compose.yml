@@ -1,0 +1,53 @@
+name: elo-portabilidade
+x-java-environment: &java-environment
+  DATABASE_USER: portabilidade
+  DATABASE_PASSWORD: ${DATABASE_PASSWORD:?Copie .env.example para .env}
+  HMAC_SECRET: ${HMAC_SECRET:?Defina HMAC_SECRET em .env}
+  PORT: 8080
+  HTTP_TIMEOUT_MS: 1200
+services:
+  database:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: portabilidade
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?Copie .env.example para .env}
+      POSTGRES_DB: portabilidade
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/01-central.sql:ro
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U portabilidade -d portabilidade"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+  central:
+    image: elo-portabilidade-java:local
+    build: ./backend
+    environment:
+      <<: *java-environment
+      APP_ROLE: central
+      DATABASE_URL: jdbc:postgresql://database:5432/central
+    depends_on:
+      database: { condition: service_healthy }
+    restart: unless-stopped
+  api:
+    image: elo-portabilidade-java:local
+    build: ./backend
+    environment:
+      <<: *java-environment
+      APP_ROLE: api
+      DATABASE_URL: jdbc:postgresql://database:5432/portabilidade
+      CENTRAL_URL: http://central:8080
+    depends_on:
+      central: { condition: service_healthy }
+    restart: unless-stopped
+  web:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:${WEB_PORT:-8088}:8080"
+    depends_on:
+      api: { condition: service_healthy }
+    restart: unless-stopped
+volumes:
+  postgres-data:
