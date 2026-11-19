@@ -70,3 +70,9 @@ A [matriz de revisão](review.md) relaciona os requisitos à implementação e a
 A revisão corrigiu contratos remotos inválidos, corrida idempotente após confirmação, agenda com datas passadas, mutabilidade da projeção de eventos, erros JSON inesperados no navegador e recuperação da atualização da agenda. Também acrescentou provas de múltiplas parcelas, seleção mista atômica e rollback de conta/estado/auditoria. O verificador de aceite agora confere classe e nome do teste, além do resultado sem falha ou skip.
 
 O JAR de produção foi inspecionado: 47 bibliotecas de runtime, nenhuma biblioteca de testes. [Resultado](evidence/runtime-artifact.json). Nenhuma dependência de produção foi adicionada. A [auditoria npm](evidence/npm-audit.json) retornou zero vulnerabilidades nesta execução. As ações do CI foram atualizadas para releases oficiais com runtime atual.
+
+## Demonstração dos dois fluxos após as correções
+
+A demonstração manual sobre a revisão `b9ecae2` confirmou duas parcelas de R$ 715,00 na operação `29e15fbd`, com atualização de ambas as contas, e rejeitou a operação `a2dd4dc3`, exibindo o motivo e preservando a conta da parcela. A parcela rejeitada voltou a ficar elegível. API e SQL somente leitura reconfirmaram os estados, eventos e exatamente uma operação em cada banco por beneficiário.
+
+[Passo a passo e seis capturas](demonstracao-pos-revisao.md) · [IDs completos, protocolos, eventos e parcelas](evidence/demonstracao-pos-revisao.json). As evidências anteriores permanecem preservadas.

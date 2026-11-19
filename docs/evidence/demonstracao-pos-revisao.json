@@ -1,0 +1,238 @@
+{
+  "data": "2026-11-19",
+  "revisaoDemonstrada": "b9ecae2a9d27b4ab1e80c883ddd8a13ff51800c6",
+  "ambiente": "Docker local com PostgreSQL; navegador interno",
+  "execucao": "Consentimento, seleção, conta, solicitação e acompanhamento executados pela interface na demonstração solicitada. Os resultados foram reconferidos por GET na API e contagens SQL somente leitura; nenhuma operação foi reenviada para gerar esta evidência.",
+  "reconferenciaEmUtc": "2026-11-19T12:32:54.099401+00:00",
+  "dados": "Exclusivamente fictícios",
+  "fluxos": [
+    {
+      "operacao": {
+        "id": "29e15fbd-fb77-472e-b28f-f149b7599eac",
+        "beneficiarioId": "DEMO-REVIEW-2PARCELAS-1911",
+        "status": "CONFIRMADA",
+        "protocolo": "ebd0b599-5e6b-4e36-befb-04f515cf0612",
+        "tentativas": 4,
+        "proximaTentativa": "2026-11-19T12:28:11.407214Z",
+        "ultimoErro": null,
+        "criadaEm": "2026-11-19T12:28:01.065640Z",
+        "solicitacao": {
+          "beneficiarioId": "DEMO-REVIEW-2PARCELAS-1911",
+          "parcelas": [
+            "1ab2bf62-cc34-3598-b88f-147e6b71ff5a",
+            "91870067-0cfe-38af-a0d9-9eb688b3599b"
+          ],
+          "credorCessionario": "Payroll Finance",
+          "contaRecebimento": {
+            "banco": "001",
+            "agencia": "1234",
+            "conta": "56789-0"
+          },
+          "cenario": "NORMAL"
+        },
+        "eventos": [
+          {
+            "sequence": 444,
+            "quando": "2026-11-19T12:28:01.068850Z",
+            "tipo": "SOLICITADA",
+            "detalhe": "Solicitação registrada; aguardando envio à Central. Conta ainda não alterada."
+          },
+          {
+            "sequence": 445,
+            "quando": "2026-11-19T12:28:01.377469Z",
+            "tipo": "ACEITA_CENTRAL",
+            "detalhe": "Central respondeu 202. Protocolo: ebd0b599-5e6b-4e36-befb-04f515cf0612"
+          },
+          {
+            "sequence": 446,
+            "quando": "2026-11-19T12:28:02.395228Z",
+            "tipo": "CONSULTA_PENDENTE",
+            "detalhe": "Central ainda está processando a portabilidade."
+          },
+          {
+            "sequence": 447,
+            "quando": "2026-11-19T12:28:02.398029Z",
+            "tipo": "REAGENDADA",
+            "detalhe": "Nova tentativa em 2000 ms (backoff com jitter e Retry-After)."
+          },
+          {
+            "sequence": 448,
+            "quando": "2026-11-19T12:28:04.427052Z",
+            "tipo": "CONSULTA_PENDENTE",
+            "detalhe": "Central ainda está processando a portabilidade."
+          },
+          {
+            "sequence": 449,
+            "quando": "2026-11-19T12:28:04.428825Z",
+            "tipo": "REAGENDADA",
+            "detalhe": "Nova tentativa em 2448 ms (backoff com jitter e Retry-After)."
+          },
+          {
+            "sequence": 450,
+            "quando": "2026-11-19T12:28:06.955112Z",
+            "tipo": "CONSULTA_PENDENTE",
+            "detalhe": "Central ainda está processando a portabilidade."
+          },
+          {
+            "sequence": 451,
+            "quando": "2026-11-19T12:28:06.957854Z",
+            "tipo": "REAGENDADA",
+            "detalhe": "Nova tentativa em 4451 ms (backoff com jitter e Retry-After)."
+          },
+          {
+            "sequence": 452,
+            "quando": "2026-11-19T12:28:11.498695Z",
+            "tipo": "CONFIRMADA",
+            "detalhe": "Central confirmou a portabilidade."
+          },
+          {
+            "sequence": 453,
+            "quando": "2026-11-19T12:28:11.498972Z",
+            "tipo": "CONTA_ATUALIZADA",
+            "detalhe": "Conta de recebimento atualizada para as parcelas confirmadas."
+          }
+        ]
+      },
+      "parcelasAposConclusao": [
+        {
+          "parcelaId": "91870067-0cfe-38af-a0d9-9eb688b3599b",
+          "convenioId": "CONV-001",
+          "valor": 345.0,
+          "dataDesconto": "2026-12-19",
+          "status": "PORTADA",
+          "elegivel": false,
+          "contaRecebimento": {
+            "banco": "001",
+            "agencia": "1234",
+            "conta": "56789-0"
+          }
+        },
+        {
+          "parcelaId": "1ab2bf62-cc34-3598-b88f-147e6b71ff5a",
+          "convenioId": "CONV-001",
+          "valor": 370.0,
+          "dataDesconto": "2027-01-19",
+          "status": "PORTADA",
+          "elegivel": false,
+          "contaRecebimento": {
+            "banco": "001",
+            "agencia": "1234",
+            "conta": "56789-0"
+          }
+        }
+      ],
+      "contagensSomenteLeitura": {
+        "plataforma": 1,
+        "central": 1
+      },
+      "totalSelecionado": "715.0",
+      "capturas": [
+        "docs/screenshots/review-demo/two-installments-selected.jpg",
+        "docs/screenshots/review-demo/two-installments-pending.jpg",
+        "docs/screenshots/review-demo/two-installments-confirmed.jpg"
+      ]
+    },
+    {
+      "operacao": {
+        "id": "a2dd4dc3-7a28-463e-a815-09b9acd40e37",
+        "beneficiarioId": "DEMO-REVIEW-REJEICAO-1911",
+        "status": "REJEITADA",
+        "protocolo": "ac94a244-365b-4222-b1d5-374e402a05dd",
+        "tentativas": 4,
+        "proximaTentativa": "2026-11-19T12:30:14.621521Z",
+        "ultimoErro": "Beneficiário não atende à política de portabilidade do convênio.",
+        "criadaEm": "2026-11-19T12:30:03.895472Z",
+        "solicitacao": {
+          "beneficiarioId": "DEMO-REVIEW-REJEICAO-1911",
+          "parcelas": [
+            "992ef09f-c1d2-3af3-89ac-5fb8f3d14098"
+          ],
+          "credorCessionario": "Payroll Finance",
+          "contaRecebimento": {
+            "banco": "237",
+            "agencia": "4321",
+            "conta": "99887-6"
+          },
+          "cenario": "REJECT"
+        },
+        "eventos": [
+          {
+            "sequence": 454,
+            "quando": "2026-11-19T12:30:03.896557Z",
+            "tipo": "SOLICITADA",
+            "detalhe": "Solicitação registrada; aguardando envio à Central. Conta ainda não alterada."
+          },
+          {
+            "sequence": 455,
+            "quando": "2026-11-19T12:30:04.270776Z",
+            "tipo": "ACEITA_CENTRAL",
+            "detalhe": "Central respondeu 202. Protocolo: ac94a244-365b-4222-b1d5-374e402a05dd"
+          },
+          {
+            "sequence": 456,
+            "quando": "2026-11-19T12:30:05.289648Z",
+            "tipo": "CONSULTA_PENDENTE",
+            "detalhe": "Central ainda está processando a portabilidade."
+          },
+          {
+            "sequence": 457,
+            "quando": "2026-11-19T12:30:05.291068Z",
+            "tipo": "REAGENDADA",
+            "detalhe": "Nova tentativa em 2000 ms (backoff com jitter e Retry-After)."
+          },
+          {
+            "sequence": 458,
+            "quando": "2026-11-19T12:30:07.320177Z",
+            "tipo": "CONSULTA_PENDENTE",
+            "detalhe": "Central ainda está processando a portabilidade."
+          },
+          {
+            "sequence": 459,
+            "quando": "2026-11-19T12:30:07.321860Z",
+            "tipo": "REAGENDADA",
+            "detalhe": "Nova tentativa em 2209 ms (backoff com jitter e Retry-After)."
+          },
+          {
+            "sequence": 460,
+            "quando": "2026-11-19T12:30:09.838331Z",
+            "tipo": "CONSULTA_PENDENTE",
+            "detalhe": "Central ainda está processando a portabilidade."
+          },
+          {
+            "sequence": 461,
+            "quando": "2026-11-19T12:30:09.838664Z",
+            "tipo": "REAGENDADA",
+            "detalhe": "Nova tentativa em 4783 ms (backoff com jitter e Retry-After)."
+          },
+          {
+            "sequence": 462,
+            "quando": "2026-11-19T12:30:14.874014Z",
+            "tipo": "REJEITADA",
+            "detalhe": "Beneficiário não atende à política de portabilidade do convênio."
+          }
+        ]
+      },
+      "parcelasAposConclusao": [
+        {
+          "parcelaId": "992ef09f-c1d2-3af3-89ac-5fb8f3d14098",
+          "convenioId": "CONV-001",
+          "valor": 345.0,
+          "dataDesconto": "2026-12-19",
+          "status": "ABERTA",
+          "elegivel": true,
+          "contaRecebimento": null
+        }
+      ],
+      "contagensSomenteLeitura": {
+        "plataforma": 1,
+        "central": 1
+      },
+      "totalSelecionado": "345.0",
+      "capturas": [
+        "docs/screenshots/review-demo/rejection-pending.jpg",
+        "docs/screenshots/review-demo/rejection-result.jpg",
+        "docs/screenshots/review-demo/rejection-account-preserved.jpg"
+      ]
+    }
+  ]
+}

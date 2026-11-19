@@ -115,6 +115,7 @@ O primeiro commit contém as especificações antes da implementação:
 - [Revisão contra o PDF e matriz de requisitos](docs/review.md)
 - [Resultados verificados e limitações](docs/verification.md)
 - [Demonstração manual dos sete cenários](docs/evidence/demonstracao-manual.json)
+- [Demonstração após as correções: duas parcelas e rejeição](docs/demonstracao-pos-revisao.md)
 
 A implementação usa IA como apoio a especificação, código e testes. As evidências vêm de execução real; o relatório registra as correções identificadas durante a validação. Nenhuma API de IA é necessária para executar o produto.
 
