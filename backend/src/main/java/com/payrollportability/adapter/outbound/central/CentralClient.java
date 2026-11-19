@@ -17,6 +17,7 @@ import java.net.http.HttpTimeoutException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -122,7 +123,7 @@ public class CentralClient implements CentralGateway {
   public Authorization authorize(AuthorizationRequest request) {
     var auth =
         parse(exchange("POST", "/autorizacoes", request, null, 201).body(), Authorization.class);
-    if (auth.id() == null
+    if (!validText(auth.id(), 36)
         || !request.beneficiarioId().equals(auth.beneficiarioId())
         || !request.convenioId().equals(auth.convenioId()))
       throw new IntegrationException("Autorização inesperada da Central.", true, 0);
@@ -134,16 +135,20 @@ public class CentralClient implements CentralGateway {
         parse(
             exchange("GET", "/beneficiarios/" + beneficiary + "/agenda", null, null, 200).body(),
             Installment[].class);
-    if (result == null
-        || Arrays.stream(result)
-            .anyMatch(
-                p ->
-                    p.parcelaId() == null
-                        || p.convenioId() == null
-                        || p.valor() == null
-                        || p.dataDesconto() == null
-                        || p.status() == null))
-      throw new IntegrationException("Agenda inesperada da Central.", true, 0);
+    var identifiers = new HashSet<String>();
+    for (Installment item : result) {
+      if (item == null
+          || !validText(item.parcelaId(), 80)
+          || !validText(item.convenioId(), 80)
+          || item.valor() == null
+          || item.valor().signum() <= 0
+          || item.dataDesconto() == null
+          || item.status() == null
+          || !Set.of("ABERTA", "PAGA", "BLOQUEADA", "PORTADA").contains(item.status())
+          || !identifiers.add(item.parcelaId())) {
+        throw new IntegrationException("Agenda inesperada da Central.", true, 0);
+      }
+    }
     return List.of(result);
   }
 
@@ -180,6 +185,13 @@ public class CentralClient implements CentralGateway {
         || status.status() == null
         || !Set.of("PENDENTE", "CONFIRMADA", "REJEITADA").contains(status.status()))
       throw new IntegrationException("Status inesperado da Central.", true, 0);
+    if (status.motivoRejeicao() != null && status.motivoRejeicao().length() > 1000)
+      throw new IntegrationException(
+          "Motivo de rejeição inválido na resposta da Central.", true, 0);
     return new Poll(status, delay);
+  }
+
+  private boolean validText(String value, int maxLength) {
+    return value != null && !value.isBlank() && value.length() <= maxLength;
   }
 }

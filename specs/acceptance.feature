@@ -282,7 +282,7 @@ Funcionalidade: Portabilidade de convênios com integridade e recuperação
   @AC-047
   Cenário: Recuperar operação após reinício e impedir alteração da auditoria
     Dado uma operação aceita com protocolo persistido no PostgreSQL
-    Quando todos os serviços são reiniciados e uma alteração no histórico é tentada
+    Quando todos os serviços são reiniciados e UPDATE e DELETE no histórico são tentados
     Então o protocolo e os eventos anteriores devem ser preservados e a operação deve confirmar sem duplicidade e o PostgreSQL deve bloquear a alteração de auditoria
 
   @AC-048

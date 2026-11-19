@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
@@ -43,6 +45,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @SpringBootTest(
     properties = {
@@ -60,7 +63,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 class PortabilityTest {
   @Autowired PortabilityService service;
   @Autowired JdbcTemplate db;
-  @Autowired OperationRepository store;
+  @MockitoSpyBean OperationRepository store;
   @Autowired UnitOfWork unitOfWork;
   @Autowired OperationProcessor worker;
   @MockitoBean CentralGateway central;
@@ -279,7 +282,14 @@ class PortabilityTest {
   @Test
   void resumeCannotChangeTerminalState() {
     var op = create();
-    assertThatThrownBy(() -> service.resume(op.id())).isInstanceOf(DomainException.class);
+    for (String status : List.of("RECEBIDA", "PENDENTE", "CONFIRMADA", "REJEITADA")) {
+      db.update("UPDATE operations SET status=? WHERE id=?", status, op.id());
+      assertThatThrownBy(() -> service.resume(op.id())).isInstanceOf(DomainException.class);
+      assertThat(store.operation(op.id()).status()).isEqualTo(status);
+      assertThat(store.operation(op.id()).eventos())
+          .extracting(Event::tipo)
+          .containsExactly("SOLICITADA");
+    }
   }
 
   @Test
@@ -324,5 +334,99 @@ class PortabilityTest {
       assertThat(accepted).isEqualTo(1);
       assertThat(store.all()).hasSize(1);
     }
+  }
+
+  private Installment open(String id, String agreement, int days) {
+    return new Installment(
+        id,
+        agreement,
+        new BigDecimal("123.45"),
+        LocalDate.now(ZoneOffset.UTC).plusDays(days),
+        "ABERTA",
+        true,
+        null);
+  }
+
+  @Test
+  void multipleInstallmentsConfirmTogether() {
+    when(central.agenda("BEN")).thenReturn(List.of(open("p1", "CONV", 10), open("p3", "CONV", 20)));
+    var op =
+        service.create(
+            "multi-key-123",
+            new OperationRequest(
+                "BEN", List.of("p3", "p1"), "Credor", destination, Scenario.NORMAL));
+    accept(op.id());
+    when(central.poll(anyString()))
+        .thenReturn(new CentralGateway.Poll(new CentralStatus("CONFIRMADA", null), 0));
+    due(op.id());
+    assertThat(store.operation(op.id()).status()).isEqualTo("CONFIRMADA");
+    assertThat(store.all()).hasSize(1);
+    assertThat(
+            db.queryForObject(
+                "SELECT count(*) FROM receiving_accounts WHERE operation_id=?",
+                Integer.class,
+                op.id()))
+        .isEqualTo(2);
+    assertThat(service.agenda("BEN"))
+        .allSatisfy(p -> assertThat(p.contaRecebimento()).isEqualTo(destination));
+  }
+
+  @Test
+  void mixedEligibilityRejectsWholeSelection() {
+    assertThatThrownBy(
+            () ->
+                service.create(
+                    "mixed-key-123",
+                    new OperationRequest(
+                        "BEN", List.of("p1", "p2"), "Credor", destination, Scenario.NORMAL)))
+        .isInstanceOf(DomainException.class);
+    assertThat(store.all()).isEmpty();
+    assertThat(db.queryForObject("SELECT count(*) FROM reservations", Integer.class)).isZero();
+    assertThat(db.queryForObject("SELECT count(*) FROM audit_events", Integer.class)).isZero();
+  }
+
+  @Test
+  void confirmationFailureRollsBackAccountAndAudit() {
+    var op = create();
+    accept(op.id());
+    when(central.poll(anyString()))
+        .thenReturn(new CentralGateway.Poll(new CentralStatus("CONFIRMADA", null), 0));
+    doThrow(new IllegalStateException("Injected audit failure"))
+        .doCallRealMethod()
+        .when(store)
+        .event(eq(op.id()), eq("CONTA_ATUALIZADA"), anyString());
+    assertThatThrownBy(() -> due(op.id())).isInstanceOf(IllegalStateException.class);
+    assertThat(store.operation(op.id()).status()).isEqualTo("PENDENTE");
+    assertThat(db.queryForObject("SELECT count(*) FROM receiving_accounts", Integer.class))
+        .isZero();
+    assertThat(store.operation(op.id()).eventos())
+        .extracting(Event::tipo)
+        .containsExactly("SOLICITADA", "ACEITA_CENTRAL");
+    due(op.id());
+    assertThat(store.operation(op.id()).status()).isEqualTo("CONFIRMADA");
+    assertThat(db.queryForObject("SELECT count(*) FROM receiving_accounts", Integer.class))
+        .isEqualTo(1);
+  }
+
+  @Test
+  void agendaContainsOnlyFutureInstallments() {
+    when(central.agenda("BEN"))
+        .thenReturn(List.of(open("p1", "CONV", 10), open("old", "CONV", -1)));
+    assertThat(service.agenda("BEN")).extracting(Installment::parcelaId).containsExactly("p1");
+  }
+
+  @Test
+  void agendaExcludesUnauthorizedAgreements() {
+    when(central.agenda("BEN"))
+        .thenReturn(List.of(open("p1", "CONV", 10), open("foreign", "OTHER", 20)));
+    assertThat(service.agenda("BEN")).extracting(Installment::parcelaId).containsExactly("p1");
+    assertThatThrownBy(
+            () ->
+                service.create(
+                    "foreign-key-123",
+                    new OperationRequest(
+                        "BEN", List.of("foreign"), "Credor", destination, Scenario.NORMAL)))
+        .isInstanceOf(DomainException.class);
+    assertThat(store.all()).isEmpty();
   }
 }

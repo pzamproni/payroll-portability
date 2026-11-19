@@ -25,10 +25,15 @@ export async function api<T>(
     );
   }
   if (!response.ok) {
-    const error = data as { code?: string; message?: string };
+    const error =
+      data !== null && typeof data === "object" && !Array.isArray(data)
+        ? (data as Record<string, unknown>)
+        : {};
     throw new ApiError(
-      error.code ?? "FALHA",
-      error.message ?? "Não foi possível concluir a solicitação.",
+      typeof error.code === "string" ? error.code : "FALHA",
+      typeof error.message === "string"
+        ? error.message
+        : "Não foi possível concluir a solicitação.",
     );
   }
   return data as T;

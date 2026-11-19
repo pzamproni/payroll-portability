@@ -53,4 +53,16 @@ class ArchitectureTest {
             "infrastructure implements outbound ports instead of calling use-case implementations")
         .check(production);
   }
+
+  @Test
+  void domainDoesNotDependOnApplication() {
+    classes()
+        .that()
+        .resideInAPackage("..domain..")
+        .should()
+        .onlyDependOnClassesThat()
+        .resideInAnyPackage("java..", "com.payrollportability.domain..")
+        .because("the domain is the innermost layer, independent even of application ports")
+        .check(production);
+  }
 }

@@ -24,7 +24,7 @@ A implementação inicial concentrava regras, JDBC e transações em serviços S
 
 O simulador é um sistema externo iniciado em outro processo. Seu código está em `simulator/`, sem dependência a partir do núcleo da plataforma. Seus próprios detalhes SQL não são regras de negócio do produto. O contrato HTTP mantém nomes de campos e estados em português por compatibilidade; a identidade, os pacotes e os artefatos do produto são em inglês.
 
-As fronteiras são protegidas por três testes ArchUnit. Monorepo e arquitetura interna são decisões independentes: não foi necessário separar repositórios nem criar microserviços adicionais para obter inversão de dependências.
+As fronteiras são protegidas por quatro testes ArchUnit. Monorepo e arquitetura interna são decisões independentes: não foi necessário separar repositórios nem criar microserviços adicionais para obter inversão de dependências.
 
 ## ADR-008 — Identidade inglesa e preservação dos dados locais
 

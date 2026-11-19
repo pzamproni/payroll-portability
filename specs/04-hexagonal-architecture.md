@@ -20,7 +20,7 @@ Use Hexagonal Architecture for the platform backend. Domain and application code
 
 ## Acceptance
 
-AC-048 enforces framework-independent domain/application dependencies. AC-049 forbids inbound adapters from depending on persistence, remote adapters or application implementations. AC-050 forbids outbound adapters from depending on inbound adapters, use-case implementations or simulator internals. Each is a distinct JUnit/ArchUnit test.
+AC-048 enforces framework-independent domain/application dependencies. AC-049 forbids inbound adapters from depending on persistence, remote adapters or application implementations. AC-050 forbids outbound adapters from depending on inbound adapters, use-case implementations or simulator internals. Each is a distinct JUnit/ArchUnit test. AC-056 separately forbids the domain from depending on application code, closing the inward-dependency rule.
 
 Existing Gherkin criteria continue to cover observable behavior. PostgreSQL smoke, restart and browser flows must still pass. Rename must preserve local PostgreSQL storage through an explicit volume reference; fresh clones use English service/database defaults. Do not edit deployed Flyway migrations or rewrite Git history.
 

@@ -36,13 +36,15 @@ def test_restart_and_immutable_audit():
     assert all(event in recovered["eventos"] for event in operation["eventos"])
     _,repeat=call("POST","/operacoes",payload,key)
     assert repeat["id"]==operation["id"]
-    # Constant SQL, fictitious test row only. Mutation must fail and transaction rollback.
-    blocked=subprocess.run(compose+["exec","-T","database","psql","-U",database_user,"-d",platform_database,"-v","ON_ERROR_STOP=1","-c","UPDATE audit_events SET detail='mutation forbidden' WHERE sequence=(SELECT min(sequence) FROM audit_events);"],capture_output=True,text=True)
-    assert blocked.returncode!=0 and "append-only" in blocked.stderr,blocked.stderr
+    # Scope mutations to this fixture and roll back even if a guard is absent.
+    for statement in ["UPDATE audit_events SET detail='mutation forbidden'", "DELETE FROM audit_events"]:
+        sql="BEGIN; "+statement+" WHERE operation_id='"+operation["id"]+"'; ROLLBACK;"
+        blocked=subprocess.run(compose+["exec","-T","database","psql","-U",database_user,"-d",platform_database,"-v","ON_ERROR_STOP=1","-c",sql],capture_output=True,text=True)
+        assert blocked.returncode!=0 and "append-only" in blocked.stderr,blocked.stderr
     for database,sql in [(platform_database,"SELECT count(*) FROM operations WHERE idempotency_key='"+key+"'"),("central","SELECT count(*) FROM central_operations WHERE idempotency_key='"+key+"'")]:
         count=subprocess.check_output(compose+["exec","-T","database","psql","-U",database_user,"-d",database,"-tAc",sql],text=True).strip()
         assert count=="1",(database,count)
-    result={"persistence":"passed","audit_update_blocked":True,"one_operation_each_database":True,"protocol_preserved":protocol}
+    result={"test":"test_restart_and_immutable_audit","persistence":"passed","audit_delete_blocked":True,"audit_update_blocked":True,"one_operation_each_database":True,"protocol_preserved":protocol}
     Path("reports").mkdir(exist_ok=True)
     Path("reports/persistence.json").write_text(json.dumps(result,indent=2)+"\n")
     print(json.dumps(result,indent=2))

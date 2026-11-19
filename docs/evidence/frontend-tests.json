@@ -1,11 +1,13 @@
 {
-  "tests": 4,
+  "tests": 6,
   "failures": 0,
   "errors": 0,
   "cases": [
     "exige consentimento explícito e mostra a agenda somente após autorização",
+    "repete atualização da agenda após falha transitória na confirmação",
     "idempotência no navegador > preserva a chave após resposta ambígua e recarregamento",
     "idempotência no navegador > gera nova chave para conteúdo diferente ou solicitação concluída",
-    "idempotência no navegador > expõe erro de integração sem silenciar a mensagem"
+    "idempotência no navegador > expõe erro de integração sem silenciar a mensagem",
+    "normaliza erros sem objeto JSON válido"
   ]
 }

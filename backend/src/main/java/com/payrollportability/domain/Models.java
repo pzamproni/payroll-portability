@@ -71,7 +71,11 @@ public final class Models {
       String ultimoErro,
       Instant criadaEm,
       OperationRequest solicitacao,
-      List<Event> eventos) {}
+      List<Event> eventos) {
+    public Operation {
+      eventos = List.copyOf(eventos);
+    }
+  }
 
   public record Protocol(String protocolo) {}
 

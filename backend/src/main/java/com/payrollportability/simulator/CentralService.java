@@ -13,7 +13,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -95,7 +97,8 @@ public class CentralService {
       throw new DomainException(
           DomainException.Kind.UNAUTHORIZED, "SEM_AUTORIZACAO", "Beneficiário sem autorização.");
     return store.db.query(
-        "SELECT * FROM central_installments WHERE beneficiary=? ORDER BY due_date,id",
+        "SELECT * FROM central_installments WHERE beneficiary=? AND due_date>? ORDER BY"
+            + " due_date,id",
         (rs, n) ->
             new Installment(
                 rs.getString("id"),
@@ -107,7 +110,8 @@ public class CentralService {
                 rs.getString("account_json") == null
                     ? null
                     : store.json.read(rs.getString("account_json"), Account.class)),
-        beneficiary);
+        beneficiary,
+        java.sql.Date.valueOf(LocalDate.now(ZoneOffset.UTC)));
   }
 
   public int attempt(String key) {
@@ -153,7 +157,8 @@ public class CentralService {
     try {
       return tx.execute(
           s -> {
-            // Global order of locks avoids deadlock for intersecting selections.
+            // Lock in canonical order, then recheck the key before current eligibility.
+            var installments = new ArrayList<Map<String, Object>>();
             for (String id : request.parcelas()) {
               var rows =
                   store.db.queryForList(
@@ -165,7 +170,11 @@ public class CentralService {
                     DomainException.Kind.CONFLICT,
                     "PARCELA_INVALIDA",
                     "Parcela não pertence ao beneficiário.");
-              var row = rows.getFirst();
+              installments.add(rows.getFirst());
+            }
+            String again = existing(key, hash);
+            if (again != null) return again;
+            for (var row : installments) {
               if (!store.agreementAuthorized(
                       request.beneficiarioId(), (String) row.get("agreement"))
                   || !"ABERTA".equals(row.get("status"))
@@ -177,8 +186,6 @@ public class CentralService {
                     "PARCELA_INELEGIVEL",
                     "Parcela inelegível na Central.");
             }
-            String again = existing(key, hash);
-            if (again != null) return again;
             String protocol = UUID.randomUUID().toString();
             store.db.update(
                 "INSERT INTO"

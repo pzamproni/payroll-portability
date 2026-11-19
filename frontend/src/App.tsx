@@ -67,8 +67,8 @@ export default function App() {
         .map((o) => o.id + o.status)
         .join();
       if (snapshot !== terminalSnapshot.current) {
-        terminalSnapshot.current = snapshot;
         if (authorized) await refreshAgenda(authorized, signal);
+        terminalSnapshot.current = snapshot;
       }
     },
     [authorized, refreshAgenda],

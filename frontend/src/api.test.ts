@@ -41,3 +41,13 @@ describe("idempotência no navegador", () => {
     await expect(api("/operacoes")).rejects.toThrow("Central indisponível");
   });
 });
+
+it("normaliza erros sem objeto JSON válido", async () => {
+  for (const payload of [null, [], 42, "erro", { code: 7, message: { detail: "invalid" } }]) {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, json: async () => payload }));
+    await expect(api("/operacoes")).rejects.toMatchObject({
+      code: "FALHA",
+      message: "Não foi possível concluir a solicitação.",
+    });
+  }
+});

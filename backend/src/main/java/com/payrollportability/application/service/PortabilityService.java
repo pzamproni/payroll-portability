@@ -73,6 +73,7 @@ public class PortabilityService implements PortabilityUseCases {
     var remote = central.agenda(beneficiary);
     var reserved = agendaState.reservedInstallments(beneficiary);
     return remote.stream()
+        .filter(p -> p.dataDesconto().isAfter(LocalDate.now(ZoneOffset.UTC)))
         .filter(p -> authorizations.agreementAuthorized(beneficiary, p.convenioId()))
         .map(
             p -> {

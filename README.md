@@ -97,7 +97,7 @@ backend/src/main/java/com/payrollportability/
 
 `PortabilityService` e `OperationProcessor` não importam Spring, JDBC, HTTP, Jackson nem Jakarta. SQL existe nos adaptadores de persistência e no simulador externo. `ApiController` depende de `PortabilityUseCases`; o scheduler depende de `OperationProcessing`. O adapter HTTP da Central implementa `CentralGateway`, e o adapter JDBC implementa as portas de repositório. `UnitOfWork` mantém a atomicidade sem expor `TransactionTemplate` aos casos de uso.
 
-A validação de formato HTTP está em `HttpRequests`; os modelos internos não carregam anotações de transporte. Os erros de negócio usam categorias internas, convertidas em status HTTP pelo adapter de entrada. Três testes ArchUnit verificam essas fronteiras (AC-048 a AC-050), além dos cenários funcionais já existentes.
+A validação de formato HTTP está em `HttpRequests`; os modelos internos não carregam anotações de transporte. Os erros de negócio usam categorias internas, convertidas em status HTTP pelo adapter de entrada. Quatro testes ArchUnit verificam essas fronteiras (AC-048 a AC-050 e AC-056), além dos cenários funcionais já existentes.
 
 [Especificação da arquitetura](specs/04-hexagonal-architecture.md) · [Decisões e trade-offs](docs/adr.md).
 
@@ -107,15 +107,24 @@ O primeiro commit contém as especificações antes da implementação:
 
 - [Requisitos e critérios de aceite](specs/01-requisitos.md)
 - [Contratos e máquina de estados](specs/02-contratos.md)
-- [Critérios de aceite em Gherkin](specs/acceptance.feature) — 51 cenários com teste individual
+- [Critérios de aceite em Gherkin](specs/acceptance.feature) — 67 cenários com teste individual
 - [Rastreabilidade cenário → teste](specs/acceptance-map.json)
 - [Plano de verificação](specs/03-plano-verificacao.md)
 - [Fronteiras da arquitetura hexagonal](specs/04-hexagonal-architecture.md)
 - [Decisões arquiteturais e trade-offs](docs/adr.md)
+- [Revisão contra o PDF e matriz de requisitos](docs/review.md)
 - [Resultados verificados e limitações](docs/verification.md)
 - [Demonstração manual dos sete cenários](docs/evidence/demonstracao-manual.json)
 
 A implementação usa IA como apoio a especificação, código e testes. As evidências vêm de execução real; o relatório registra as correções identificadas durante a validação. Nenhuma API de IA é necessária para executar o produto.
+
+### Uso da IA: processo, prompts e restrições
+
+O Codex apoiou a leitura do PDF, a elaboração das specs, a implementação e a revisão. Os pedidos originais incluíram “use SDD para desenvolver”, “Dockerize sempre com multistage” e “Coloque criterios de aceite nas specs. Use gherkin. Cada cenário deve ter um teste”. Na revisão, o usuário pediu conferir o projeto inteiro contra o PDF, incluindo arquitetura, dependências e cobertura.
+
+As restrições adotadas foram: especificar critérios antes das correções; preservar contratos públicos, dados e histórico Git; manter domínio/aplicação sem frameworks; não tratar resposta ambígua como rejeição de negócio; usar dados fictícios e testes executados como evidência. O usuário também pediu remover o arquivo de harness separado; a documentação do processo fica nesta seção, nas specs e nos ADRs.
+
+As decisões propostas com apoio da IA foram confrontadas com testes: idempotência local/remota, HMAC nas duas direções, worker persistente, transações e fronteiras ArchUnit. A revisão reproduziu defeitos com testes antes das correções, incluindo resposta nula na agenda e corrida após confirmação remota. Os resultados e limites estão em [review.md](docs/review.md) e [verification.md](docs/verification.md), e os commits preservam a evolução das especificações. Sugestões de IA não substituem a execução dessas verificações.
 
 ## Testes
 
@@ -130,6 +139,7 @@ npm run build
 npx playwright install chromium
 npm run test:e2e         # exige Compose em http://localhost:8088
 cd ..
+python3 scripts/check_runtime_artifact.py # impede bibliotecas de teste no JAR
 python3 scripts/smoke.py # sete cenários HTTP com concorrência, sobre PostgreSQL
 python3 scripts/persistence.py # reinício e verificação da auditoria imutável
 python3 scripts/check_acceptance.py --results # cruza Gherkin com resultados reais
@@ -213,6 +223,8 @@ Erros seguem `{ "code": "CHAVE_REUTILIZADA", "message": "..." }`. Consulte [o co
 | JUnit / Mockito / AssertJ / H2 / JaCoCo / ArchUnit | Testes de invariantes, falhas, cobertura e fronteiras arquiteturais. |
 | Vitest / Testing Library / Playwright | Comportamento de formulários, idempotência do navegador e jornadas reais. |
 | Nginx unprivileged | Estáticos e proxy no mesmo origin, runtime sem Node. |
+
+O CI também inspeciona o JAR executável para impedir inclusão de JUnit, Mockito, H2 e outras bibliotecas de teste.
 
 Imports Java são explícitos em produção e testes, com bloqueio automatizado de curingas (AC-051). TypeScript rejeita imports, variáveis e parâmetros não usados. As bibliotecas Java de teste são declaradas individualmente, sem o agregado `spring-boot-starter-test`; a redução medida do classpath está em [dependencies.json](docs/evidence/dependencies.json). Isso reduz resolução de dependências de teste; imports com `*` por si só não alteram downloads nem tamanho do JAR.
 

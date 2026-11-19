@@ -42,10 +42,15 @@ if '--results' in sys.argv:
     for ac,test in mapping.items():
         if test['file'].endswith('.py'):
             result=json.loads((root/'reports/persistence.json').read_text())
-            assert result.get('persistence')=='passed' and result.get('audit_update_blocked') and result.get('one_operation_each_database'),f'{ac}: persistence integration test did not pass'
+            assert result.get('test')==test['test'] and result.get('persistence')=='passed' and result.get('audit_delete_blocked') and result.get('audit_update_blocked') and result.get('one_operation_each_database'),f'{ac}: persistence integration test did not pass'
             continue
         cases=java_cases if test['file'].endswith('.java') else frontend_cases
-        matches=[case for case in cases if case.get('name','').endswith(test['test']) and (not test['file'].endswith('.java') or case.get('classname','').endswith(Path(test['file']).stem))]
+        if test['file'].endswith('.java'):
+            expected_class='.'.join(Path(test['file']).with_suffix('').parts[4:])
+            matches=[case for case in cases if case.get('name')==test['test'] and case.get('classname')==expected_class]
+        else:
+            expected_class=test['file'].removeprefix('frontend/')
+            matches=[case for case in cases if (case.get('name')==test['test'] or case.get('name','').endswith(' > '+test['test'])) and case.get('classname')==expected_class]
         assert len(matches)==1,f'{ac}: expected one executed test result, found {len(matches)}'
         assert not any(matches[0].find(tag) is not None for tag in ('failure','error','skipped')),f'{ac}: test failed or was skipped'
     print(f'PASS: all {len(mapping)} acceptance criteria have a passing, non-skipped test result.')

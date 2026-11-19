@@ -1,6 +1,8 @@
 {
+  "test": "test_restart_and_immutable_audit",
   "persistence": "passed",
+  "audit_delete_blocked": true,
   "audit_update_blocked": true,
   "one_operation_each_database": true,
-  "protocol_preserved": "f66c904c-fd93-4d78-b301-fc5cf92fdded"
+  "protocol_preserved": "897bf88b-b6dd-44c6-8717-447ba0df2894"
 }
