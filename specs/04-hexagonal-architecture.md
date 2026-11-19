@@ -23,3 +23,9 @@ Use Hexagonal Architecture for the platform backend. Domain and application code
 AC-048 enforces framework-independent domain/application dependencies. AC-049 forbids inbound adapters from depending on persistence, remote adapters or application implementations. AC-050 forbids outbound adapters from depending on inbound adapters, use-case implementations or simulator internals. Each is a distinct JUnit/ArchUnit test.
 
 Existing Gherkin criteria continue to cover observable behavior. PostgreSQL smoke, restart and browser flows must still pass. Rename must preserve local PostgreSQL storage through an explicit volume reference; fresh clones use English service/database defaults. Do not edit deployed Flyway migrations or rewrite Git history.
+
+## Dependency and import discipline
+
+AC-051 requires explicit imports in all Java production and test sources, including static imports. A JUnit source-convention test enforces this without adding a formatting/checkstyle dependency. The TypeScript build also rejects unused imports/locals/parameters.
+
+Java wildcard imports do not download artifacts or enlarge the packaged application. Maven dependency declarations/scopes control artifact resolution. The aggregate test starter was replaced with the actual Spring test, JUnit API/engine, Mockito, AssertJ, JsonPath and Hamcrest libraries used by this suite. Runtime dependencies remain unchanged; test-only dependencies must not be packaged in the executable JAR.

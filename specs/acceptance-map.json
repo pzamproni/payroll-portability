@@ -298,5 +298,11 @@
     "file": "backend/src/test/java/com/payrollportability/ArchitectureTest.java",
     "test": "outboundAdaptersDoNotDependOnUseCaseImplementations",
     "type": "unit"
+  },
+  "AC-051": {
+    "scenario": "Usar somente imports Java explícitos",
+    "file": "backend/src/test/java/com/payrollportability/SourceConventionsTest.java",
+    "test": "javaImportsAreExplicit",
+    "type": "unit"
   }
 }

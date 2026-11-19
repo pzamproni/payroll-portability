@@ -302,3 +302,9 @@ Funcionalidade: Portabilidade de convênios com integridade e recuperação
     Dado adaptadores de saída de persistência e integração
     Quando suas dependências são verificadas
     Então eles não devem depender de adaptadores de entrada nem de serviços de aplicação ou do simulador
+
+  @AC-051
+  Cenário: Usar somente imports Java explícitos
+    Dado os fontes Java de produção e testes
+    Quando as declarações de import são verificadas no build
+    Então nenhum import comum ou estático deve utilizar curinga
