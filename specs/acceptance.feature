@@ -284,3 +284,21 @@ Funcionalidade: Portabilidade de convênios com integridade e recuperação
     Dado uma operação aceita com protocolo persistido no PostgreSQL
     Quando todos os serviços são reiniciados e uma alteração no histórico é tentada
     Então o protocolo e os eventos anteriores devem ser preservados e a operação deve confirmar sem duplicidade e o PostgreSQL deve bloquear a alteração de auditoria
+
+  @AC-048
+  Cenário: Manter domínio e aplicação independentes de frameworks
+    Dado o núcleo do backend organizado em domínio e aplicação
+    Quando suas dependências de bytecode são verificadas
+    Então o núcleo deve depender apenas de Java e das próprias abstrações internas
+
+  @AC-049
+  Cenário: Conduzir entradas pelas portas de casos de uso
+    Dado adaptadores de entrada HTTP e scheduling
+    Quando suas dependências são verificadas
+    Então eles não devem depender de adaptadores de saída nem das implementações de casos de uso
+
+  @AC-050
+  Cenário: Impedir dependências de saída para implementações internas
+    Dado adaptadores de saída de persistência e integração
+    Quando suas dependências são verificadas
+    Então eles não devem depender de adaptadores de entrada nem de serviços de aplicação ou do simulador
