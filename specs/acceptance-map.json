@@ -304,5 +304,89 @@
     "file": "backend/src/test/java/com/payrollportability/SourceConventionsTest.java",
     "test": "javaImportsAreExplicit",
     "type": "unit"
+  },
+  "AC-052": {
+    "scenario": "Recusar item nulo na agenda assinada",
+    "file": "backend/src/test/java/com/payrollportability/CentralClientContractTest.java",
+    "test": "nullAgendaEntryIsExplicitIntegrationFailure",
+    "type": "integration"
+  },
+  "AC-053": {
+    "scenario": "Recusar identificadores duplicados na agenda",
+    "file": "backend/src/test/java/com/payrollportability/CentralClientContractTest.java",
+    "test": "duplicateAgendaIdsAreRejected",
+    "type": "integration"
+  },
+  "AC-054": {
+    "scenario": "Validar valores e status da agenda externa",
+    "file": "backend/src/test/java/com/payrollportability/CentralClientContractTest.java",
+    "test": "invalidAgendaValuesFailExplicitly",
+    "type": "integration"
+  },
+  "AC-055": {
+    "scenario": "Limitar retornos externos antes da persistência",
+    "file": "backend/src/test/java/com/payrollportability/CentralClientContractTest.java",
+    "test": "oversizedRejectionReasonIsRejected",
+    "type": "integration"
+  },
+  "AC-056": {
+    "scenario": "Preservar a direção das dependências do domínio",
+    "file": "backend/src/test/java/com/payrollportability/ArchitectureTest.java",
+    "test": "domainDoesNotDependOnApplication",
+    "type": "unit"
+  },
+  "AC-057": {
+    "scenario": "Confirmar portabilidade de várias parcelas",
+    "file": "backend/src/test/java/com/payrollportability/PortabilityTest.java",
+    "test": "multipleInstallmentsConfirmTogether",
+    "type": "integration"
+  },
+  "AC-058": {
+    "scenario": "Recusar seleção parcialmente inelegível sem efeitos parciais",
+    "file": "backend/src/test/java/com/payrollportability/PortabilityTest.java",
+    "test": "mixedEligibilityRejectsWholeSelection",
+    "type": "integration"
+  },
+  "AC-059": {
+    "scenario": "Reverter confirmação em falha de persistência",
+    "file": "backend/src/test/java/com/payrollportability/PortabilityTest.java",
+    "test": "confirmationFailureRollsBackAccountAndAudit",
+    "type": "integration"
+  },
+  "AC-060": {
+    "scenario": "Recuperar protocolo após confirmação concorrente",
+    "file": "backend/src/test/java/com/payrollportability/CentralHttpTest.java",
+    "test": "replayAfterConcurrentConfirmationKeepsProtocol",
+    "type": "integration"
+  },
+  "AC-061": {
+    "scenario": "Reenviar timeout anterior ao aceite com idempotência",
+    "file": "backend/src/test/java/com/payrollportability/CentralHttpTest.java",
+    "test": "timeoutBeforeAcceptanceIsIdempotent",
+    "type": "integration"
+  },
+  "AC-062": {
+    "scenario": "Exibir somente descontos futuros",
+    "file": "backend/src/test/java/com/payrollportability/PortabilityTest.java",
+    "test": "agendaContainsOnlyFutureInstallments",
+    "type": "integration"
+  },
+  "AC-063": {
+    "scenario": "Restringir agenda ao convênio consentido",
+    "file": "backend/src/test/java/com/payrollportability/PortabilityTest.java",
+    "test": "agendaExcludesUnauthorizedAgreements",
+    "type": "integration"
+  },
+  "AC-064": {
+    "scenario": "Manter a projeção da auditoria imutável",
+    "file": "backend/src/test/java/com/payrollportability/ModelsTest.java",
+    "test": "operationEventsAreImmutableSnapshots",
+    "type": "unit"
+  },
+  "AC-065": {
+    "scenario": "Tratar corpo de erro inesperado no frontend",
+    "file": "frontend/src/api.test.ts",
+    "test": "normaliza erros sem objeto JSON válido",
+    "type": "unit"
   }
 }

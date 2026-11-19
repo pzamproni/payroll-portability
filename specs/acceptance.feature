@@ -308,3 +308,87 @@ Funcionalidade: Portabilidade de convênios com integridade e recuperação
     Dado os fontes Java de produção e testes
     Quando as declarações de import são verificadas no build
     Então nenhum import comum ou estático deve utilizar curinga
+
+  @AC-052
+  Cenário: Recusar item nulo na agenda assinada
+    Dado uma resposta assinada contendo item nulo na agenda
+    Quando a agenda é processada
+    Então o cliente deve retornar falha explícita de integração sem NullPointerException
+
+  @AC-053
+  Cenário: Recusar identificadores duplicados na agenda
+    Dado uma agenda assinada com identificadores de parcela repetidos
+    Quando a agenda é processada
+    Então a resposta deve ser recusada como inesperada
+
+  @AC-054
+  Cenário: Validar valores e status da agenda externa
+    Dado uma agenda assinada com valor não positivo ou status desconhecido
+    Quando a agenda é processada
+    Então o cliente deve emitir falha explícita de integração
+
+  @AC-055
+  Cenário: Limitar retornos externos antes da persistência
+    Dado uma resposta assinada com motivo de rejeição maior que o limite suportado
+    Quando o status remoto é processado
+    Então o cliente deve emitir falha de integração antes de tentar gravar o motivo
+
+  @AC-056
+  Cenário: Preservar a direção das dependências do domínio
+    Dado o pacote de domínio do backend
+    Quando as dependências do domínio são verificadas
+    Então nenhuma classe de domínio deve depender da aplicação ou de camadas externas
+
+  @AC-057
+  Cenário: Confirmar portabilidade de várias parcelas
+    Dado duas parcelas futuras elegíveis do mesmo beneficiário
+    Quando uma única portabilidade é confirmada
+    Então as duas contas devem ser atualizadas e uma única operação deve ser registrada
+
+  @AC-058
+  Cenário: Recusar seleção parcialmente inelegível sem efeitos parciais
+    Dado uma seleção com parcela aberta e parcela paga
+    Quando o registro da operação é solicitado
+    Então nenhuma operação reserva ou evento deve ser persistido
+
+  @AC-059
+  Cenário: Reverter confirmação em falha de persistência
+    Dado uma operação pendente cuja Central confirma a portabilidade
+    Quando a gravação final da auditoria falha
+    Então estado conta e eventos devem ser revertidos e um retry deve concluir sem duplicidade
+
+  @AC-060
+  Cenário: Recuperar protocolo após confirmação concorrente
+    Dado um reenvio cuja primeira consulta idempotente ainda não encontrou operação
+    Quando outra requisição aceita e confirma a mesma intenção antes do lock das parcelas
+    Então o reenvio deve retornar o protocolo existente sem rejeitar a parcela já portada
+
+  @AC-061
+  Cenário: Reenviar timeout anterior ao aceite com idempotência
+    Dado uma Central no cenário TIMEOUT
+    Quando as duas primeiras chamadas excedem o timeout e a terceira é reenviada
+    Então um protocolo único deve ser retornado e somente uma operação remota deve existir
+
+  @AC-062
+  Cenário: Exibir somente descontos futuros
+    Dado uma agenda contendo parcela futura e parcela vencida
+    Quando a agenda do beneficiário autorizado é consultada
+    Então somente a parcela futura deve ser exibida
+
+  @AC-063
+  Cenário: Restringir agenda ao convênio consentido
+    Dado um beneficiário autorizado somente para um dos convênios retornados
+    Quando a agenda é consultada e uma parcela do outro convênio é solicitada
+    Então a parcela sem consentimento deve ser ocultada e seu registro deve ser recusado
+
+  @AC-064
+  Cenário: Manter a projeção da auditoria imutável
+    Dado uma operação construída com uma lista de eventos
+    Quando a lista original ou a lista exposta pela operação é alterada
+    Então os eventos da operação devem permanecer inalterados
+
+  @AC-065
+  Cenário: Tratar corpo de erro inesperado no frontend
+    Dado uma resposta de erro da API cujo JSON é nulo ou não contém objeto de erro válido
+    Quando o frontend processa a resposta
+    Então uma mensagem de falha controlada deve ser exibida sem erro de acesso a propriedades
